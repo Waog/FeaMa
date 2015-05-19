@@ -3,13 +3,14 @@
   "private": true,
   "dependencies": {
     "jquery": "~1.11.1",
-    "jquery-ui": "~1.11.4"
+    "jquery-ui": "~1.11.4",
+    "jqueryui-touch-punch": "*"
   },
   "overrides": {
     "jquery-ui": {
       "main": [
-		"jquery-ui.js",   	
-      	"themes/smoothness/jquery-ui.css"
+        "jquery-ui.js",
+        "themes/smoothness/jquery-ui.css"
       ]
     }
   }
