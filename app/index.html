@@ -9,7 +9,8 @@
 <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 <!-- build:css(.) styles/vendor.css -->
 <!-- bower:css -->
-<link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet"
+    href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css" />
 <!-- endbower -->
 <!-- endbuild -->
 <!-- build:css(.tmp) styles/main.css -->
@@ -23,23 +24,50 @@
     <![endif]-->
 
 
-    <div class="hero-unit">
+    <div>
         <h1>'Allo, 'Allo!</h1>
-        <p>You now have</p>
-        <ul>
-            <li>HTML5 Boilerplate</li>
-        </ul>
     </div>
 
-    <div id="projects">
-        <h3 class="ui-accordion-header ui-state-default ui-accordion-header-active ui-state-active ui-corner-top ui-accordion-icons">jQuery Core</h3>
-        <p>jQuery is a fast, small, and feature-rich JavaScript
-            library...</p>
-        <h3>jQuery UI</h3>
-        <p>jQuery UI is a curated set of user interface
-            interactions...</p>
-        <h3>jQuery Mobile</h3>
-        <p>jQuery Mobile is a HTML5-based user interface system...</p>
+    <div class="column">
+
+        <div class="portlet">
+            <div class="portlet-header">Feeds</div>
+            <div class="portlet-content">Lorem ipsum dolor sit
+                amet, consectetuer adipiscing elit</div>
+    </div>
+
+        <div class="portlet">
+            <div class="portlet-header">News</div>
+            <div class="portlet-content">Lorem ipsum dolor sit
+                amet, consectetuer adipiscing elit</div>
+    </div>
+
+    </div>
+
+    <div class="column">
+
+        <div class="portlet">
+            <div class="portlet-header">Shopping</div>
+            <div class="portlet-content">Lorem ipsum dolor sit
+                amet, consectetuer adipiscing elit</div>
+    </div>
+
+    </div>
+
+    <div class="column">
+
+        <div class="portlet">
+            <div class="portlet-header">Links</div>
+            <div class="portlet-content">Lorem ipsum dolor sit
+                amet, consectetuer adipiscing elit</div>
+    </div>
+
+        <div class="portlet">
+            <div class="portlet-header">Images</div>
+            <div class="portlet-content">Lorem ipsum dolor sit
+                amet, consectetuer adipiscing elit</div>
+    </div>
+
     </div>
 
 
@@ -72,7 +100,33 @@
     <!-- endbuild -->
 
     <script>
-                    $("#projects").accordion();
+                    $(function() {
+                        $(".column").sortable({
+                            connectWith : ".column",
+                            handle : ".portlet-header",
+                            cancel : ".portlet-toggle",
+                            placeholder : "portlet-placeholder ui-corner-all"
+                        });
+
+                        $(".portlet")
+                                .addClass(
+                                        "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+                                .find(".portlet-header")
+                                .addClass("ui-widget-header ui-corner-all")
+                                .prepend(
+                                        "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
+
+                        $(".portlet-toggle")
+                                .click(
+                                        function() {
+                                            var icon = $(this);
+                                            icon
+                                                    .toggleClass("ui-icon-minusthick ui-icon-plusthick");
+                                            icon.closest(".portlet").find(
+                                                    ".portlet-content")
+                                                    .toggle();
+                                        });
+                    });
                 </script>
 </body>
 </html>
