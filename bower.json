@@ -6,7 +6,8 @@
     "jquery-ui": "~1.11.4",
     "jqueryui-touch-punch": "*",
     "github-api": "~0.10.6",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "hello": "~1.6.0"
   },
   "overrides": {
     "jquery-ui": {

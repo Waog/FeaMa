@@ -20,7 +20,7 @@ stomap.getSubIssues = function(feature, allIssues) {
     var result = [];
     for (var i = 0; i < allIssues.length; i++) {
         var issue = allIssues[i];
-        
+
         if (feature.body.indexOf('#' + issue.number) > -1) {
             result.push(issue);
         }
@@ -91,14 +91,14 @@ $(function() {
             .list(
                     options,
                     function(err, issues) {
-                        console.log('err:', err);
-                        console.log('issues:', issues);
+                        if (err) {
+                            console.log('err:', err);
+                        }
 
                         var columnCount = 0;
                         for (var i = 0; i < issues.length; ++i) {
                             if (i in issues) {
                                 var issue = issues[i];
-                                console.log('issue' + i + ':', issue);
 
                                 if (stomap.isFeature(issue)) {
                                     stomap.addColumn();
