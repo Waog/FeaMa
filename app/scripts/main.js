@@ -16,6 +16,15 @@ stomap.addColumn = function() {
     });
 };
 
+stomap.isFeature = function(issue) {
+    for (var i = 0; i < issue.labels.length; i++) {
+        if (issue.labels[i].name === 'feature') {
+            return true;
+        }
+    }
+    return false;
+};
+
 stomap.addFeature = function(columnIndex, header, content) {
     stomap.addGenericCard(columnIndex, header, content, true);
 };
@@ -62,7 +71,7 @@ $(function() {
     // auth : 'basic'
     });
 
-    var issues = github.getIssues('Waog', 'towelGuy');
+    var issues = github.getIssues('Waog', 'sandboxRepo');
 
     var options = {};
 
@@ -79,8 +88,14 @@ $(function() {
                 var issue = issues[i];
                 console.log('issue' + i + ':', issue);
                 console.log('title' + i + ':', issue.title);
-                console.log('issue' + i + ':', issue.body);
-                stomap.addCard(i % 5, issue.title, issue.body);
+                console.log('body' + i + ':', issue.body);
+                console.log('labels' + i + ':', issue.labels);
+                
+                if (stomap.isFeature(issue)) {
+                    stomap.addFeature(i % 5, issue.title, issue.body);
+                } else {
+                    stomap.addCard(i % 5, issue.title, issue.body);
+                }
             }
         }
     });
