@@ -16,6 +16,18 @@ stomap.addColumn = function() {
     });
 };
 
+stomap.getSubIssues = function(feature, allIssues) {
+    var result = [];
+    for (var i = 0; i < allIssues.length; i++) {
+        var issue = allIssues[i];
+        
+        if (feature.body.indexOf('#' + issue.number) > -1) {
+            result.push(issue);
+        }
+    }
+    return result;
+};
+
 stomap.isFeature = function(issue) {
     for (var i = 0; i < issue.labels.length; i++) {
         if (issue.labels[i].name === 'feature') {
@@ -25,39 +37,39 @@ stomap.isFeature = function(issue) {
     return false;
 };
 
-stomap.addFeature = function(columnIndex, header, content) {
-    stomap.addGenericCard(columnIndex, header, content, true);
+stomap.addFeature = function(columnIndex, issue) {
+    stomap.addGenericCard(columnIndex, issue, true);
 };
 
-stomap.addCard = function(columnIndex, header, content) {
-    stomap.addGenericCard(columnIndex, header, content, false);
+stomap.addCard = function(columnIndex, issue) {
+    stomap.addGenericCard(columnIndex, issue, false);
 };
 
-stomap.addGenericCard = function(columnIndex, header, content, isFeature) {
+stomap.addGenericCard = function(columnIndex, issue, isFeature) {
     var featureClassString = isFeature ? ' feature' : '';
 
     var column = $('.column:eq(' + columnIndex + ')');
 
-    column.append('<div class="portlet ' +
-            'ui-widget ui-widget-content ui-helper-clearfix ui-corner-all' +
-            featureClassString + '"></div>');
+    column.append('<div class="portlet '
+            + 'ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'
+            + featureClassString + '"></div>');
     var portlet = column.children('div.portlet:last-child');
 
     portlet
-            .append('<div class="portlet-header ui-widget-header ui-corner-all">' +
-                    header + '</div>');
+            .append('<div class="portlet-header ui-widget-header ui-corner-all">'
+                    + issue.title + '</div>');
     var portletHeader = portlet.find('.portlet-header');
 
     portletHeader
             .prepend('<span class="portlet-toggle ui-icon ui-icon-plusthick"></span>');
-    var portletToggle = portletHeader.find('.portlet-toggle');    
+    var portletToggle = portletHeader.find('.portlet-toggle');
     portletToggle.click(function() {
         var icon = $(this);
         icon.toggleClass('ui-icon-minusthick ui-icon-plusthick');
         icon.closest('.portlet').find('.portlet-content').toggle();
     });
-    
-    portlet.append('<div class="portlet-content">' + content + '</div>');
+
+    portlet.append('<div class="portlet-content">' + issue.body + '</div>');
     portlet.find('.portlet-content').hide();
 
 };
@@ -75,28 +87,33 @@ $(function() {
 
     var options = {};
 
-    issues.list(options, function(err, issues) {
-        console.log('err:', err);
-        console.log('issues:', issues);
+    issues
+            .list(
+                    options,
+                    function(err, issues) {
+                        console.log('err:', err);
+                        console.log('issues:', issues);
 
-        for (var colIndex = 0; colIndex < 5; colIndex++) {
-            stomap.addColumn();
-        }
+                        var columnCount = 0;
+                        for (var i = 0; i < issues.length; ++i) {
+                            if (i in issues) {
+                                var issue = issues[i];
+                                console.log('issue' + i + ':', issue);
 
-        for (var i = 0; i < issues.length; ++i) {
-            if (i in issues) {
-                var issue = issues[i];
-                console.log('issue' + i + ':', issue);
-                console.log('title' + i + ':', issue.title);
-                console.log('body' + i + ':', issue.body);
-                console.log('labels' + i + ':', issue.labels);
-                
-                if (stomap.isFeature(issue)) {
-                    stomap.addFeature(i % 5, issue.title, issue.body);
-                } else {
-                    stomap.addCard(i % 5, issue.title, issue.body);
-                }
-            }
-        }
-    });
+                                if (stomap.isFeature(issue)) {
+                                    stomap.addColumn();
+                                    stomap.addFeature(columnCount, issue);
+
+                                    var subIssues = stomap.getSubIssues(issue,
+                                            issues);
+
+                                    for (var subIssueIndex = 0; subIssueIndex < subIssues.length; subIssueIndex++) {
+                                        stomap.addCard(columnCount,
+                                                subIssues[subIssueIndex]);
+                                    }
+                                    columnCount++;
+                                }
+                            }
+                        }
+                    });
 });
