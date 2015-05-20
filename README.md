@@ -17,4 +17,4 @@ To run the tests navigate into the `/test` folder and run `bower install` there.
 After that tests can be started using `grunt test` in the *root folder*.
 
 #### Distributing
-Running `grunt` in the *root folder* creates a `dist` folder with the content to be uploaded. (currently not working)
+Running `grunt` in the *root folder* creates a `dist` folder with the content to be uploaded.
