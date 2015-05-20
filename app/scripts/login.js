@@ -8,9 +8,25 @@ stomapLogin.handleAuthLogin = function(auth) {
 
     console.log("auth.login success #1: ", auth);
 
+    $('#profile').empty();
+    $('#login').empty();
+    $('#logout').empty();
+    $('#logout').append('<button onclick="hello(\'github\').logout()">logout</button>');
+
     // Call user information, for the given network
     hello(auth.network).api('/me').then(stomapLogin.handleMeResponse,
             stomapLogin.handleError);
+}
+
+stomapLogin.handleAuthLogout = function(auth) {
+    
+    console.log("auth.logout success #1: ", auth);
+    
+    // Call user information, for the given network
+    $('#profile').empty();
+    $('#login').empty();
+    $('#logout').empty();
+    $('#logout').append('<button onclick="hello(\'github\').login()">login</button>');
 }
 
 stomapLogin.handleMeResponse = function(r) {
@@ -19,27 +35,18 @@ stomapLogin.handleMeResponse = function(r) {
 
     $('#profile').empty();
     $('#profile').append(r.name);
-    $('#profile').append('<img src="' + r.thumbnail + '" />');
-    $('#login').remove();
-    
-    // Inject it into the container
-    var label = document.getElementById('profile_' + auth.network);
-    if (!label) {
-        label = document.createElement('div');
-        label.id = 'profile_' + auth.network;
-        document.getElementById('profile').appendChild(label);
-    }
-    label.innerHTML = '<img src="' + r.thumbnail + '" /> Hey ' + r.name;
+    $('#profile').append('<img style="height: 50px; width: auto;" src="' + r.thumbnail + '" />');
 }
 
-hello
-        .init(
-                {
-                    google : '707503277953-0l52gh27j9dbpaoubeec5kqsupvirn2h.apps.googleusercontent.com',
-                    github : '1418f544c5ed81d99e77'
-                }, {
-                    /* display: 'page', */
-                    redirect_uri : 'http://localhost:9000/'
-                });
+hello.init({
+    // google :
+    // '707503277953-0l52gh27j9dbpaoubeec5kqsupvirn2h.apps.googleusercontent.com',
+    github : '1418f544c5ed81d99e77'
+}, {
+    /* display: 'page', */
+    redirect_uri : 'http://localhost:9000/',
+    oauth_proxy : 'https://auth-server.herokuapp.com/proxy'
+});
 
 hello.on('auth.login', stomapLogin.handleAuthLogin, stomapLogin.handleError);
+hello.on('auth.logout', stomapLogin.handleAuthLogout, stomapLogin.handleError);
