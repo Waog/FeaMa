@@ -29,32 +29,33 @@ stomap.addGenericCard = function(columnIndex, header, content, isFeature) {
 
     var column = $('.column:eq(' + columnIndex + ')');
 
-    column.append('<div class="portlet' + featureClassString + '"></div>');
+    column.append('<div class="portlet ' +
+            'ui-widget ui-widget-content ui-helper-clearfix ui-corner-all' +
+            featureClassString + '"></div>');
     var portlet = column.children('div.portlet:last-child');
 
-    portlet.append('<div class="portlet-header">' + header + '</div>');
-    portlet.append('<div class="portlet-content">' + content + '</div>');
-
     portlet
-            .addClass(
-                    'ui-widget ui-widget-content ui-helper-clearfix ui-corner-all')
-            .find('.portlet-header')
-            .addClass('ui-widget-header ui-corner-all')
-            .prepend(
-                    '<span class="ui-icon ui-icon-plusthick portlet-toggle"></span>');
+            .append('<div class="portlet-header ui-widget-header ui-corner-all">' +
+                    header + '</div>');
+    var portletHeader = portlet.find('.portlet-header');
 
-    portlet.find('.portlet-content').hide();
-
-    portlet.find('.portlet-toggle').click(function() {
+    portletHeader
+            .prepend('<span class="portlet-toggle ui-icon ui-icon-plusthick"></span>');
+    var portletToggle = portletHeader.find('.portlet-toggle');    
+    portletToggle.click(function() {
         var icon = $(this);
         icon.toggleClass('ui-icon-minusthick ui-icon-plusthick');
         icon.closest('.portlet').find('.portlet-content').toggle();
     });
+    
+    portlet.append('<div class="portlet-content">' + content + '</div>');
+    portlet.find('.portlet-content').hide();
+
 };
 
 $(function() {
 
-    /*global Github */
+    /* global Github */
     var github = new Github({
     // username : 'YOU_USER',
     // password : 'YOUR_PASSWORD',
@@ -72,7 +73,7 @@ $(function() {
         for (var colIndex = 0; colIndex < 5; colIndex++) {
             stomap.addColumn();
         }
-        
+
         for (var i = 0; i < issues.length; ++i) {
             if (i in issues) {
                 var issue = issues[i];
