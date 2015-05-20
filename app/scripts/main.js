@@ -2,9 +2,9 @@
 
 console.log('\'Allo \'Allo!');
 
-var feama = {};
+var stomap = {};
 
-feama.addColumn = function() {
+stomap.addColumn = function() {
     $('.board').append('<div class="column"></div>');
 
     $('.board > .column:last-child').sortable({
@@ -16,15 +16,15 @@ feama.addColumn = function() {
     });
 };
 
-feama.addFeature = function(columnIndex, header, content) {
-    feama.addGenericCard(columnIndex, header, content, true);
+stomap.addFeature = function(columnIndex, header, content) {
+    stomap.addGenericCard(columnIndex, header, content, true);
 };
 
-feama.addCard = function(columnIndex, header, content) {
-    feama.addGenericCard(columnIndex, header, content, false);
+stomap.addCard = function(columnIndex, header, content) {
+    stomap.addGenericCard(columnIndex, header, content, false);
 };
 
-feama.addGenericCard = function(columnIndex, header, content, isFeature) {
+stomap.addGenericCard = function(columnIndex, header, content, isFeature) {
     var featureClassString = isFeature ? ' feature' : '';
 
     var column = $('.column:eq(' + columnIndex + ')');
@@ -70,7 +70,7 @@ $(function() {
         console.log('issues:', issues);
 
         for (var colIndex = 0; colIndex < 5; colIndex++) {
-            feama.addColumn();
+            stomap.addColumn();
         }
         
         for (var i = 0; i < issues.length; ++i) {
@@ -79,7 +79,7 @@ $(function() {
                 console.log('issue' + i + ':', issue);
                 console.log('title' + i + ':', issue.title);
                 console.log('issue' + i + ':', issue.body);
-                feama.addCard(i % 5, issue.title, issue.body);
+                stomap.addCard(i % 5, issue.title, issue.body);
             }
         }
     });
