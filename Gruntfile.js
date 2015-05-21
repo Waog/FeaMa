@@ -20,7 +20,7 @@ module.exports = function (grunt) {
   var config = {
     app: 'app',
     dist: 'dist',
-    tsSrc: 'app/ts/**'
+    tssrc: 'app/ts/**'
   };
 
   // Define the configuration for all the tasks
@@ -31,7 +31,7 @@ module.exports = function (grunt) {
 
     typescript: {
       base: {
-        src: ['<%= config.tsSrc %>/*.ts'],
+        src: ['<%= config.tssrc %>/*.ts'],
         dest: '<%= config.app %>/scripts/gen/stomap.js'
       }
     },
@@ -43,7 +43,7 @@ module.exports = function (grunt) {
         tasks: ['wiredep']
       },
       ts: {
-        files: '<%= config.tsSrc %>/*.ts',
+        files: ['<%= config.tssrc %>/*.ts'],
         tasks: ['typescript']
       },
       jshint: {
