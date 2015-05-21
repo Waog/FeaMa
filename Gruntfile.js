@@ -32,8 +32,12 @@ module.exports = function (grunt) {
     typescript: {
       base: {
         src: ['<%= config.tssrc %>/*.ts'],
-        dest: '<%= config.app %>/scripts/gen/stomap.js'
-      }
+        dest: '<%= config.app %>/scripts/gen/stomap.js',
+        options: {
+        	sourceMap: true,
+        	declaration: true
+        }
+      },
     },
     
     // Watches files for changes and runs tasks based on the changed files
