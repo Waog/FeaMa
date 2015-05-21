@@ -13,13 +13,14 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
-  // Load grunt tasks automatically
-  require('load-grunt-tasks')(grunt);
+  // Load grunt tasks automatically & lazy load tasks
+  require('jit-grunt')(grunt);
 
   // Configurable paths
   var config = {
     app: 'app',
-    dist: 'dist'
+    dist: 'dist',
+    tssrc: 'app/ts/**'
   };
 
   // Define the configuration for all the tasks
@@ -28,18 +29,27 @@ module.exports = function (grunt) {
     // Project settings
     config: config,
 
+    typescript: {
+      base: {
+        src: ['<%= config.tssrc %>/*.ts'],
+        dest: '<%= config.app %>/scripts/gen/stomap.js'
+      }
+    },
+    
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
-      js: {
-        files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['jshint'],
-        options: {
-          livereload: true
-        }
+      ts: {
+        files: ['<%= config.tssrc %>/*.ts'],
+        tasks: ['typescript']
+      },
+      jshint: {
+      	files: ['<%= config.app %>/scripts/{,*/}*.js',
+      	        '!<%= config.app %>/scripts/gen/*'],
+      	tasks: ['jshint'],
       },
       jstest: {
         files: ['test/spec/{,*/}*.js'],
@@ -61,7 +71,13 @@ module.exports = function (grunt) {
           '.tmp/styles/{,*/}*.css',
           '<%= config.app %>/images/{,*/}*'
         ]
-      }
+      },
+      livereloadjs: {
+        files: ['<%= config.app %>/scripts/{,*/}*.js'],
+        options: {
+          livereload: true
+        }
+      },
     },
 
     // The actual grunt server settings
@@ -131,6 +147,7 @@ module.exports = function (grunt) {
         'Gruntfile.js',
         '<%= config.app %>/scripts/{,*/}*.js',
         '!<%= config.app %>/scripts/vendor/*',
+        '!<%= config.app %>/scripts/gen/*',
         'test/spec/{,*/}*.js'
       ]
     },
@@ -332,6 +349,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'typescript',
       'wiredep',
       'concurrent:server',
       'autoprefixer',
@@ -362,6 +380,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'typescript',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',

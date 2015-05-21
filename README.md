@@ -7,6 +7,7 @@ The website was initialized using [yo](http://yeoman.io/) with the [webapp gener
 1. Checkout the repository
 1. Navigate to the working directory (comand line)
   1. run `npm install`
+  1. run `npm install -g mocha`
   1. run `bower install`
   1. run `grunt serve`
 
