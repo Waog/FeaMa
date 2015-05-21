@@ -23,7 +23,7 @@
     },
     "hello": {
       "main": [
-        "dist/hello.all.min.js",
+        "dist/hello.all.js",
         "src/modules/github.js"
       ]
     }
