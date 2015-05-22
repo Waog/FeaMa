@@ -1,4 +1,7 @@
 /// <reference path="tsd.d.ts" />
+/// <reference path="GithubApi/GithubLogin.ts" />
+/// <reference path="GithubApi/GithubIssue.ts" />
+/// <reference path="GithubApi/GithubIssues.ts" />
 
 import GithubIssue = GithubApi.GithubIssue;
 import GithubIssues = GithubApi.GithubIssues;

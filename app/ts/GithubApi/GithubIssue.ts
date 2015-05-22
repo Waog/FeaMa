@@ -1,9 +1,14 @@
 /// <reference path="../tsd.d.ts" />
+/// <reference path="GithubLogin" />
 
 module GithubApi {
 
     export class GithubIssue {
-        constructor(private githubResponse: any, private helloGithub: HelloJSStaticNamed) {
+        
+        private helloGithub;
+        
+        constructor(private githubResponse: any, private githubLogin: GithubLogin) {
+            this.helloGithub = githubLogin;
         }
 
         public setBody(body: string): void {
