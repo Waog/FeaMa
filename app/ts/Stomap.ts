@@ -26,11 +26,22 @@ module Stomap {
         private addColumn = () => {
             $('.board').append('<div class="column"></div>');
 
-            $('.board > .column:last-child').sortable({
+            var newColumn = $('.board > .column:last-child');
+
+            newColumn.sortable({
                 connectWith: '.column',
                 items: '.sortableCard',
                 placeholder: 'portlet-placeholder ui-corner-all',
             });
+
+            newColumn.droppable({
+                drop: this.dropHandler
+            });
+        }
+
+        private dropHandler = function(event, draggable) {
+            var droppable = $(this);
+            console.log('dropped!: ', droppable, event, draggable);
         }
 
         private getSubIssues = (feature, allIssues) => {
