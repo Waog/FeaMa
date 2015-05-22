@@ -28,10 +28,8 @@ module Stomap {
 
             $('.board > .column:last-child').sortable({
                 connectWith: '.column',
-                handle: '.portlet-header',
-                cancel: '.portlet-toggle',
+                items: '.sortableCard',
                 placeholder: 'portlet-placeholder ui-corner-all',
-                containment: '.board'
             });
         }
 
@@ -65,12 +63,12 @@ module Stomap {
         }
 
         private addGenericCard = (columnIndex, issue, isFeature) => {
-            var featureClassString = isFeature ? ' feature' : '';
+            var featureClassString = isFeature ? 'feature' : 'sortableCard';
 
             var column = $('.column:eq(' + columnIndex + ')');
 
             column.append('<div class="portlet ' +
-                'ui-widget ui-widget-content ui-helper-clearfix ui-corner-all' +
+                'ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ' +
                 featureClassString + '"></div>');
             var portlet = column.children('div.portlet:last-child');
 
