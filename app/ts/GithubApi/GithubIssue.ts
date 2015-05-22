@@ -3,7 +3,7 @@
 module GithubApi {
 
     export class GithubIssue {
-        constructor(private githubResponse: any) {
+        constructor(private githubResponse: any, private helloGithub: HelloJSStaticNamed) {
         }
 
         public setBody(body: string): void {
@@ -15,7 +15,7 @@ module GithubApi {
         }
 
         public commit(successHandler: (obj: any) => void, errorHandler: (err: any) => void): void {
-            hello('github').api('/repos/Waog/sandboxRepo/issues/' + this.githubResponse.number,
+            this.helloGithub.api('/repos/Waog/sandboxRepo/issues/' + this.githubResponse.number,
                 'PATCH', {
                     title: this.githubResponse.title,
                     body: this.githubResponse.body,

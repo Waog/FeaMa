@@ -38,7 +38,7 @@ module Stomap {
         private handleGetBugIssue = (bugIssuesResponse) => {
             console.log('handleGetBugIssue ', bugIssuesResponse);
 
-            var bugIssue0: GithubIssue = new GithubIssue(bugIssuesResponse.data[0]);
+            var bugIssue0: GithubIssue = new GithubIssue(bugIssuesResponse.data[0], hello('github'));
 
             bugIssue0.setBody(bugIssue0.getBody() + ' STOMAP');
 
