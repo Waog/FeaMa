@@ -1,7 +1,5 @@
 /// <reference path="tsd.d.ts" />
 
-declare var Github: any;
-
 module Stomap {
 
     export class Stomap {
@@ -9,7 +7,7 @@ module Stomap {
             console.log('\'Allo \'Allo!');
             
             /* global Github */
-            var github = new Github({
+            var github:Github = new Github({
                 // username : 'YOU_USER',
                 // password : 'YOUR_PASSWORD',
                 // auth : 'basic'
