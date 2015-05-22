@@ -3,3 +3,5 @@ dist
 .tmp
 bower_components
 app/scripts/gen
+/typings/
+app/ts/tsd.d.ts

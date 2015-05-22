@@ -1,6 +1,6 @@
+/// <reference path="tsd.d.ts" />
+
 module Stomap {
-    declare var hello: any;
-    declare var $: any;
 
     export class Login {
         constructor(greeting: string) {
@@ -21,15 +21,15 @@ module Stomap {
 
             $('#logout').append(
                 '<button onclick="hello(\'github\').login()">login</button>');
-            hello.on('auth.login', Login.handleAuthLogin, Login.handleError);
-            hello.on('auth.logout', Login.handleAuthLogout, Login.handleError);
+            hello.on('auth.login', Login.handleAuthLogin)
+            hello.on('auth.logout', Login.handleAuthLogout)
         }
 
         private static handleError(e): void {
             console.log('handleError ', e);
         }
 
-        private static handleDebugSuccess(obj1, obj2, obj3): void {
+        private static handleDebugSuccess(obj1, obj2?, obj3?): void {
             console.log('handleDebugSuccess ', obj1, obj2, obj3);
         }
 
@@ -60,7 +60,7 @@ module Stomap {
             return result;
         }
 
-        private static handleAuthLogin(auth): void {
+        private static handleAuthLogin(auth: HelloJSEventArgument): void {
 
             console.log('handleAuthLogin ', auth);
 

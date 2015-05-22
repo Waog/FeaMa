@@ -31,7 +31,7 @@ module.exports = function (grunt) {
 
     typescript: {
       base: {
-        src: ['<%= config.tssrc %>/*.ts'],
+        src: ['<%= config.tssrc %>/*.ts', 'typings/**/*.ts'],
         dest: '<%= config.app %>/scripts/gen/stomap.js',
         options: {
         	sourceMap: true,

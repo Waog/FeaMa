@@ -1,4 +1,5 @@
-declare var $: any;
+/// <reference path="tsd.d.ts" />
+
 declare var Github: any;
 
 module Stomap {
