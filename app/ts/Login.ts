@@ -1,5 +1,7 @@
 /// <reference path="tsd.d.ts" />
 
+import GithubIssue = GithubApi.GithubIssue;
+
 module Stomap {
 
     export class Login {
@@ -36,28 +38,11 @@ module Stomap {
         private handleGetBugIssue = (bugIssuesResponse) => {
             console.log('handleGetBugIssue ', bugIssuesResponse);
 
-            var bugIssue0 = bugIssuesResponse.data[0];
+            var bugIssue0: GithubIssue = new GithubIssue(bugIssuesResponse.data[0]);
 
-            console.log('bug-body?: ' + bugIssue0.body);
-            hello('github').api('/repos/Waog/sandboxRepo/issues/' + bugIssue0.number,
-                'PATCH', {
-                    title: bugIssue0.title,
-                    body: bugIssue0.body + " STOMAP",
-                    assignee: bugIssue0.assignee.login,
-                    state: bugIssue0.state,
-                    milestone: bugIssue0.milestone,
-                    labels: this.labelResponseToRequest(bugIssue0.labels)
-                }).then(this.handleDebugSuccess, this.handleError);
-        }
+            bugIssue0.setBody(bugIssue0.getBody() + ' STOMAP');
 
-        private labelResponseToRequest = (issueResponse) => {
-            console.log('labelResponseToRequest ', issueResponse);
-
-            var result = [];
-            for (var i = 0; i < issueResponse.length; i++) {
-                result.push(issueResponse[i].name);
-            }
-            return result;
+            bugIssue0.commit(this.handleDebugSuccess, this.handleError);
         }
 
         private handleAuthLogin = (auth: HelloJSEventArgument) => {
@@ -72,7 +57,7 @@ module Stomap {
 
             hello('github').api('/me').then(this.handleMeResponse,
                 this.handleError);
-                
+
             hello('github').api('/repos/Waog/sandboxRepo/issues', 'get', {
                 labels: 'bug'
             }).then(this.handleGetBugIssue, this.handleError);
