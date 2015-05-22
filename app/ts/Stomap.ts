@@ -7,7 +7,7 @@ module Stomap {
             console.log('\'Allo \'Allo!');
             
             /* global Github */
-            var github:Github = new Github({
+            var github: Github = new Github({
                 // username : 'YOU_USER',
                 // password : 'YOUR_PASSWORD',
                 // auth : 'basic'
@@ -20,10 +20,10 @@ module Stomap {
             issues
                 .list(
                 options,
-                Stomap.handleListResponse);
+                this.handleListResponse);
         }
 
-        private static addColumn() {
+        private addColumn = () => {
             $('.board').append('<div class="column"></div>');
 
             $('.board > .column:last-child').sortable({
@@ -35,7 +35,7 @@ module Stomap {
             });
         }
 
-        private static getSubIssues(feature, allIssues) {
+        private getSubIssues = (feature, allIssues) => {
             var result = [];
             for (var i = 0; i < allIssues.length; i++) {
                 var issue = allIssues[i];
@@ -47,7 +47,7 @@ module Stomap {
             return result;
         }
 
-        private static isFeature(issue) {
+        private isFeature = (issue) => {
             for (var i = 0; i < issue.labels.length; i++) {
                 if (issue.labels[i].name === 'feature') {
                     return true;
@@ -56,15 +56,15 @@ module Stomap {
             return false;
         }
 
-        private static addFeature(columnIndex, issue) {
-            Stomap.addGenericCard(columnIndex, issue, true);
+        private addFeature = (columnIndex, issue) => {
+            this.addGenericCard(columnIndex, issue, true);
         }
 
-        private static addCard(columnIndex, issue) {
-            Stomap.addGenericCard(columnIndex, issue, false);
+        private addCard = (columnIndex, issue) => {
+            this.addGenericCard(columnIndex, issue, false);
         }
 
-        private static addGenericCard(columnIndex, issue, isFeature) {
+        private addGenericCard = (columnIndex, issue, isFeature) => {
             var featureClassString = isFeature ? ' feature' : '';
 
             var column = $('.column:eq(' + columnIndex + ')');
@@ -92,30 +92,30 @@ module Stomap {
 
         }
 
-        public static handleListResponse(err, issues) {
+        public handleListResponse = (err, issues) => {
             if (err) {
                 console.log('err:', err);
             } else {
-                Stomap.fillBoardWithIssues(issues);
+                this.fillBoardWithIssues(issues);
             }
 
 
         }
 
-        private static fillBoardWithIssues(issues) {
+        private fillBoardWithIssues = (issues) => {
             var columnCount = 0;
             for (var i = 0; i < issues.length; ++i) {
                 if (i in issues) {
                     var issue = issues[i];
 
-                    if (Stomap.isFeature(issue)) {
-                        Stomap.addColumn();
-                        Stomap.addFeature(columnCount, issue);
+                    if (this.isFeature(issue)) {
+                        this.addColumn();
+                        this.addFeature(columnCount, issue);
 
-                        var subIssues = Stomap.getSubIssues(issue, issues);
+                        var subIssues = this.getSubIssues(issue, issues);
 
                         for (var subIssueIndex = 0; subIssueIndex < subIssues.length; subIssueIndex++) {
-                            Stomap.addCard(columnCount, subIssues[subIssueIndex]);
+                            this.addCard(columnCount, subIssues[subIssueIndex]);
                         }
                         columnCount++;
                     }
