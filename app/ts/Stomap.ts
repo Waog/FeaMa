@@ -39,9 +39,8 @@ module Stomap {
             });
         }
 
-        private dropHandler = function(event, draggable) {
-            var droppable = $(this);
-            console.log('dropped!: ', droppable, event, draggable);
+        private dropHandler = (event, draggable) => {
+            console.log('dropped!: ', event.target, event.toElement, draggable);
         }
 
         private getSubIssues = (feature, allIssues) => {
