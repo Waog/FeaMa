@@ -5,8 +5,10 @@ module GithubApi {
     export class GithubIssues {
 
         private githubIssues: any;
+        private helloGithub: HelloJSStaticNamed;
 
-        constructor(private helloGithub: HelloJSStaticNamed) {
+        constructor(private githubLogin: GithubLogin) {
+            this.helloGithub = githubLogin.getHello();
         }
 
         fetchByLabel(label: string, successHandler: (result: GithubIssues) => void, errorHandler: (err: any) => void) {
