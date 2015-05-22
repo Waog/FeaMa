@@ -1,6 +1,7 @@
 /// <reference path="tsd.d.ts" />
 
 import GithubIssue = GithubApi.GithubIssue;
+import GithubIssues = GithubApi.GithubIssues;
 
 module Stomap {
 
@@ -35,10 +36,10 @@ module Stomap {
             console.log('handleDebugSuccess ', obj1, obj2, obj3);
         }
 
-        private handleGetBugIssue = (bugIssuesResponse) => {
-            console.log('handleGetBugIssue ', bugIssuesResponse);
+        private handleGetBugIssues = (bugIssues:GithubIssues) => {
+            console.log('handleGetBugIssue ', bugIssues);
 
-            var bugIssue0: GithubIssue = new GithubIssue(bugIssuesResponse.data[0], hello('github'));
+            var bugIssue0: GithubIssue = bugIssues.get(0);
 
             bugIssue0.setBody(bugIssue0.getBody() + ' STOMAP');
 
@@ -58,8 +59,8 @@ module Stomap {
             hello('github').api('/me').then(this.handleMeResponse,
                 this.handleError);
 
-            var issues:GithubApi.GithubIssues = new GithubApi.GithubIssues(hello('github'));
-            issues.fetchByLabel('bug', this.handleGetBugIssue, this.handleError);
+            var issues:GithubIssues = new GithubIssues(hello('github'));
+            issues.fetchByLabel('bug', this.handleGetBugIssues, this.handleError);
         }
 
         private handleAuthLogout = (auth) => {

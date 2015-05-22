@@ -7,7 +7,7 @@ module Stomap {
             console.log('\'Allo \'Allo!');
             
             /* global Github */
-            var github: Github = new Github({
+            var github: GithubLib.Github = new Github({
                 // username : 'YOU_USER',
                 // password : 'YOUR_PASSWORD',
                 // auth : 'basic'
