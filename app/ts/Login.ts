@@ -58,9 +58,8 @@ module Stomap {
             hello('github').api('/me').then(this.handleMeResponse,
                 this.handleError);
 
-            hello('github').api('/repos/Waog/sandboxRepo/issues', 'get', {
-                labels: 'bug'
-            }).then(this.handleGetBugIssue, this.handleError);
+            var issues:GithubApi.GithubIssues = new GithubApi.GithubIssues(hello('github'));
+            issues.fetchByLabel('bug', this.handleGetBugIssue, this.handleError);
         }
 
         private handleAuthLogout = (auth) => {
