@@ -27,6 +27,12 @@
         <h1>'Allo, 'Allo!</h1>
     </div>
 
+    <div id="profile"></div>
+    <div id="logout">
+    </div>
+    <div id="login">
+    </div>
+
 
     <div class="board"></div>
 
@@ -38,6 +44,8 @@
     <script src="bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/github-api/github.js"></script>
+    <script src="bower_components/hello/dist/hello.all.js"></script>
+    <script src="bower_components/hello/src/modules/github.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -58,10 +66,9 @@
                     ga('send', 'pageview');
                 </script>
 
-    <!-- build:js({app,.tmp}) scripts/main.js -->
-    <script src="scripts/main.js"></script>
-    <!-- endbuild -->
     <script src="scripts/gen/stomap.js"></script>
+    <!-- build:js({app,.tmp}) scripts/main.js -->
+    <!-- endbuild -->
 
 </body>
 </html>

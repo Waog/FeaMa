@@ -31,9 +31,14 @@ module.exports = function (grunt) {
 
     typescript: {
       base: {
-        src: ['<%= config.tssrc %>/*.ts'],
-        dest: '<%= config.app %>/scripts/gen/stomap.js'
-      }
+        src: ['<%= config.tssrc %>/*.ts', 'typings/**/*.ts'],
+        dest: '<%= config.app %>/scripts/gen/stomap.js',
+        options: {
+        	target: 'es5', //or es3 or es6
+        	sourceMap: true,
+        	declaration: true
+        }
+      },
     },
     
     // Watches files for changes and runs tasks based on the changed files

@@ -1,0 +1,18 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "app/ts/tsd.d.ts",
+  "installed": {
+    "hellojs/hellojs.d.ts": {
+      "commit": "6578de8234d6587be88583541704fd8e9fc4deff"
+    },
+    "jquery/jquery.d.ts": {
+      "commit": "2e904baa7f46d2752b63e6aeb8687ed471e7569b"
+    },
+    "jqueryui/jqueryui.d.ts": {
+      "commit": "2e904baa7f46d2752b63e6aeb8687ed471e7569b"
+    }
+  }
+}
