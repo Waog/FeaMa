@@ -21,19 +21,19 @@ module Stomap {
 
             $('#logout').append(
                 '<button onclick="hello(\'github\').login()">login</button>');
-            hello.on('auth.login', Login.handleAuthLogin)
-            hello.on('auth.logout', Login.handleAuthLogout)
+            hello.on('auth.login', this.handleAuthLogin)
+            hello.on('auth.logout', this.handleAuthLogout)
         }
 
-        private static handleError(e): void {
+        private handleError = (e) => {
             console.log('handleError ', e);
         }
 
-        private static handleDebugSuccess(obj1, obj2?, obj3?): void {
+        private handleDebugSuccess = (obj1, obj2?, obj3?) => {
             console.log('handleDebugSuccess ', obj1, obj2, obj3);
         }
 
-        private static handleGetBugIssue(bugIssuesResponse): void {
+        private handleGetBugIssue = (bugIssuesResponse) => {
             console.log('handleGetBugIssue ', bugIssuesResponse);
 
             var bugIssue0 = bugIssuesResponse.data[0];
@@ -46,11 +46,11 @@ module Stomap {
                     assignee: bugIssue0.assignee.login,
                     state: bugIssue0.state,
                     milestone: bugIssue0.milestone,
-                    labels: Login.labelResponseToRequest(bugIssue0.labels)
-                }).then(Login.handleDebugSuccess, Login.handleError);
+                    labels: this.labelResponseToRequest(bugIssue0.labels)
+                }).then(this.handleDebugSuccess, this.handleError);
         }
 
-        private static labelResponseToRequest(issueResponse): string[] {
+        private labelResponseToRequest = (issueResponse) => {
             console.log('labelResponseToRequest ', issueResponse);
 
             var result = [];
@@ -60,7 +60,7 @@ module Stomap {
             return result;
         }
 
-        private static handleAuthLogin(auth: HelloJSEventArgument): void {
+        private handleAuthLogin = (auth: HelloJSEventArgument) => {
 
             console.log('handleAuthLogin ', auth);
 
@@ -70,15 +70,15 @@ module Stomap {
             $('#logout').append(
                 '<button onclick="hello(\'github\').logout()">logout</button>');
 
-            hello('github').api('/me').then(Login.handleMeResponse,
-                Login.handleError);
-
+            hello('github').api('/me').then(this.handleMeResponse,
+                this.handleError);
+                
             hello('github').api('/repos/Waog/sandboxRepo/issues', 'get', {
                 labels: 'bug'
-            }).then(Login.handleGetBugIssue, Login.handleError);
+            }).then(this.handleGetBugIssue, this.handleError);
         }
 
-        private static handleAuthLogout(auth) {
+        private handleAuthLogout = (auth) => {
 
             console.log('handleAuthLogout ', auth);
 
@@ -90,7 +90,7 @@ module Stomap {
                 '<button onclick="hello(\'github\').login()">login</button>');
         }
 
-        private static handleMeResponse(r) {
+        private handleMeResponse = (r) => {
 
             console.log('handleMeResponse ', r);
 
