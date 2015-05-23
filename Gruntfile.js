@@ -29,6 +29,20 @@ module.exports = function (grunt) {
     // Project settings
     config: config,
 
+    karma: {
+    	options: {
+        configFile: 'karma.conf.js',
+      },
+      continuous: {
+        singleRun: false,
+        background: true
+      },
+      once: {
+        singleRun: true,
+        background: false
+      }
+    },
+    
     typescript: {
       base: {
         src: ['<%= config.tssrc %>/*.ts', 'typings/**/*.ts'],
@@ -55,6 +69,11 @@ module.exports = function (grunt) {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
+      // run unit tests with karma (server needs to be already running)
+      karma: {
+        files: ['app/js/**/*.js', 'test/spec/**/*.js'],
+        tasks: ['karma:continuous:run'] // NOTE the :run flag
+      },
       ts: {
         files: ['<%= config.tssrc %>/*.ts'],
         tasks: ['typescript']
@@ -63,10 +82,6 @@ module.exports = function (grunt) {
       	files: ['<%= config.app %>/scripts/{,*/}*.js',
       	        '!<%= config.app %>/scripts/gen/*'],
       	tasks: ['jshint'],
-      },
-      jstest: {
-        files: ['test/spec/{,*/}*.js', 'test/spec/**/*.ts'],
-        tasks: ['test:watch']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -107,20 +122,6 @@ module.exports = function (grunt) {
           middleware: function(connect) {
             return [
               connect.static('.tmp'),
-              connect().use('/bower_components', connect.static('./bower_components')),
-              connect.static(config.app)
-            ];
-          }
-        }
-      },
-      test: {
-        options: {
-          open: false,
-          port: 9001,
-          middleware: function(connect) {
-            return [
-              connect.static('.tmp'),
-              connect.static('test'),
               connect().use('/bower_components', connect.static('./bower_components')),
               connect.static(config.app)
             ];
@@ -196,7 +197,8 @@ module.exports = function (grunt) {
         ignorePath: /^\/|\.\.\//,
         src: ['<%= config.app %>/index.html']
       },
-      test: { // some magic taken from here: https://github.com/yeoman/generator-angular/issues/856
+      test: { // some magic taken from here:
+							// https://github.com/yeoman/generator-angular/issues/856
         devDependencies: true,
         src: 'karma.conf.js',
         ignorePath:  /\.\.\//,
@@ -297,32 +299,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // By default, your `index.html`'s <!-- Usemin block --> will take care
-    // of minification. These next options are pre-configured if you do not
-    // wish to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css',
-    //         '<%= config.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/scripts/scripts.js': [
-    //         '<%= config.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
-
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
@@ -382,6 +358,7 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'autoprefixer',
+      'karma:continuous:start',
       'connect:livereload',
       'watch'
     ]);
@@ -393,19 +370,13 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('test', function (target) {
-    if (target !== 'watch') {
-      grunt.task.run([
-        'clean:server',
-        'typescript:test',
-        'wiredep:test',
-        'concurrent:test',
-        'autoprefixer'
-      ]);
-    }
-
     grunt.task.run([
-      'connect:test',
-      'mocha'
+      'clean:server',
+      'typescript:test',
+      'wiredep',
+      'concurrent:test',
+      'autoprefixer',
+      'karma:once',
     ]);
   });
 
