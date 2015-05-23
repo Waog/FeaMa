@@ -39,6 +39,14 @@ module.exports = function (grunt) {
         	declaration: true
         }
       },
+      test: {
+      	src: ['test/**/*.ts', '<%= config.tssrc %>/*.ts', 'typings/**/*.ts'],
+      	dest: 'test/spec/gen/allTsTests.js',
+      	options: {
+      		target: 'es5', //or es3 or es6
+      		sourceMap: true
+      	}
+      }
     },
     
     // Watches files for changes and runs tasks based on the changed files
@@ -57,7 +65,7 @@ module.exports = function (grunt) {
       	tasks: ['jshint'],
       },
       jstest: {
-        files: ['test/spec/{,*/}*.js'],
+        files: ['test/spec/{,*/}*.js', 'test/spec/**/*.ts'],
         tasks: ['test:watch']
       },
       gruntfile: {
@@ -187,6 +195,22 @@ module.exports = function (grunt) {
       app: {
         ignorePath: /^\/|\.\.\//,
         src: ['<%= config.app %>/index.html']
+      },
+      test: { // some magic taken from here: https://github.com/yeoman/generator-angular/issues/856
+        devDependencies: true,
+        src: 'karma.conf.js',
+        ignorePath:  /\.\.\//,
+        fileTypes: {
+          js: {
+            block: /(([\s\t]*)\/\/\s*bower:*(\S*))(\n|\r|.)*?(\/\/\s*endbower)/gi,
+            detect: {
+              js: /'(.*\.js)'/gi
+            },
+            replace: {
+              js: '\'{{filePath}}\','
+            }
+          }
+        }
       }
     },
 
@@ -372,6 +396,8 @@ module.exports = function (grunt) {
     if (target !== 'watch') {
       grunt.task.run([
         'clean:server',
+        'typescript:test',
+        'wiredep:test',
         'concurrent:test',
         'autoprefixer'
       ]);
