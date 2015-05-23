@@ -20,7 +20,8 @@ module.exports = function (grunt) {
   var config = {
     app: 'app',
     dist: 'dist',
-    tssrc: 'app/ts/**'
+    tssrc: 'app/ts/**',
+    tstest: 'test/spec/**'
   };
 
   // Define the configuration for all the tasks
@@ -29,6 +30,12 @@ module.exports = function (grunt) {
     // Project settings
     config: config,
 
+    focus: {
+      test: {
+        exclude: ['appjs2appts']
+      }
+    },
+    
     karma: {
     	options: {
         configFile: 'karma.conf.js',
@@ -54,7 +61,7 @@ module.exports = function (grunt) {
         }
       },
       test: {
-      	src: ['test/**/*.ts', '<%= config.tssrc %>/*.ts', 'typings/**/*.ts'],
+      	src: ['<%= config.tssrc %>/*.ts', '<%= config.tstest %>/*.ts', 'typings/**/*.ts'],
       	dest: 'test/spec/gen/allTsTests.js',
       	options: {
       		target: 'es5', //or es3 or es6
@@ -71,12 +78,16 @@ module.exports = function (grunt) {
       },
       // run unit tests with karma (server needs to be already running)
       karma: {
-        files: ['app/js/**/*.js', 'test/spec/**/*.js'],
+        files: ['app/scripts/**/*.js', 'test/spec/**/*.js'],
         tasks: ['karma:continuous:run'] // NOTE the :run flag
       },
-      ts: {
-        files: ['<%= config.tssrc %>/*.ts'],
-        tasks: ['typescript']
+      appjs2appts: {
+      	files: ['<%= config.tssrc %>/*.ts'],
+      	tasks: ['typescript:base']
+      },
+      js2testts: {
+        files: ['<%= config.tssrc %>/*.ts', '<%= config.tstest %>/*.ts'],
+        tasks: ['typescript:test']
       },
       jshint: {
       	files: ['<%= config.app %>/scripts/{,*/}*.js',
@@ -376,8 +387,17 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:test',
       'autoprefixer',
+      'continue:on',
       'karma:once',
+      'continue:off'
     ]);
+    
+    if (target === 'continuous') {
+      grunt.task.run([
+        'karma:continuous:start',
+        'focus:test'
+      ]);
+    }
   });
 
   grunt.registerTask('build', [

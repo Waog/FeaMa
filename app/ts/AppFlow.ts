@@ -11,7 +11,7 @@ module Stomap {
 
     export class AppFlow {
         constructor() {
-            console.log('constructor ');
+            console.log('constructor');
 
             var githubLogin = new GithubLogin(this.handleLogin);
         }

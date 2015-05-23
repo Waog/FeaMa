@@ -4,30 +4,25 @@
 /**
  * Globals
  */
-
 var expect = chai.expect;
 
 /**
  * Unit tests
  */
-describe('User Model Unit Tests:',() => {
+describe('Calculations Unit Tests:',() => {
 
-    describe('2 + 4',() => {
-        it('should be 6',(done) => {
-            expect(2 + 4).to.equals(6);
+    describe('positive test',() => {
+        it('should never fail',(done) => {
+            expect(1).to.equals(1);
             done();
         });
+    });
 
-        it('should not be 7',(done) => {
-            expect(2 + 4).to.not.equals(7);
-            done();
-        });
-
-        it('TODO: has nothing to do with GithubIssues',(done) => {
+    describe('SimpleMath',() => {
+        it('should return 2 for 1 + 1',(done) => {
             var simpleMath = new Calculations.SimpleMath();
-            expect(simpleMath.addTwoNumbers(2, 6)).to.equals(8);
+            expect(simpleMath.addTwoNumbers(1, 1)).to.equals(2);
             done();
         });
-
     });
 });
