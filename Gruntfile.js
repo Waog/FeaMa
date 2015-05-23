@@ -47,6 +47,10 @@ module.exports = function (grunt) {
       once: {
         singleRun: true,
         background: false
+      },
+      debug: {
+  	    browsers : ['Chrome'],
+      	singleRun: false
       }
     },
     
@@ -79,6 +83,7 @@ module.exports = function (grunt) {
       // run unit tests with karma (server needs to be already running)
       karma: {
         files: ['app/scripts/**/*.js', 'test/spec/**/*.js'],
+        // TODO: is also run on 'debug' target, not only on 'continuous', which works for the moment
         tasks: ['karma:continuous:run'] // NOTE the :run flag
       },
       appjs2appts: {
@@ -398,6 +403,12 @@ module.exports = function (grunt) {
         'focus:test'
       ]);
     }
+		if (target === 'debug') {
+			grunt.task.run([
+			  'karma:debug:start',
+			  'focus:test'
+	    ]);
+		}
   });
 
   grunt.registerTask('build', [

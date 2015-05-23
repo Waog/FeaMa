@@ -13,7 +13,7 @@ module.exports = function(config) {
 	    frameworks : [
 	        'mocha', 'chai'
 	    ],
-
+	    
 	    // list of files / patterns to load in the browser
 	    files : [
 	        // bower:js
@@ -27,7 +27,12 @@ module.exports = function(config) {
 	        // endbower
 
 	        'app/scripts/**/*.js',
-	        'test/spec/**/*.js'
+	        'test/spec/**/*.js',
+	        
+	        {pattern: 'app/scripts/**/*.js.map', included: false},
+	        {pattern: 'app/ts/**/*.ts', included: false},
+	        {pattern: 'test/spec/**/*.js.map', included: false},
+	        {pattern: 'test/spec/**/*.ts', included: false}
 	    ],
 
 	    // list of files to exclude
