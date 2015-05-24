@@ -7,10 +7,12 @@
  */
 var expect = chai.expect;
 
+chai.config.includeStack = true;
+
 /**
  * Unit tests
  */
-describe('Calculations Unit Tests:',() => {
+describe('Test Framework Tests:',() => {
 
     describe('positive test',() => {
         it('should never fail',(done) => {
@@ -42,21 +44,59 @@ describe('Calculations Unit Tests:',() => {
 
         it('should replace globals with GlobalStub',(done) => {
             
-//            var xmlhttp = new XMLHttpRequest();
-//            
-//            expect(xmlhttp.send).to.be.instanceOf(Function);
-//            
-//            TeddyMocks.GlobalOverride.createScope(() => {
-//
-//                var globalStub = new TeddyMocks.GlobalStub<XMLHttpRequest>("XMLHttpRequest");
-//                globalStub.stubs(s => s.send(undefined), false);
-//
-//                var request = new XMLHttpRequest();
-//                request.send(undefined);
-//
-//                expect(globalStub.assertsThat(s => s.send(undefined)).wasCalled()).to.equal(true);
-//            });
+            //            var xmlhttp = new XMLHttpRequest();
+            //            
+            //            expect(xmlhttp.send).to.be.instanceOf(Function);
+            //            
+            //            TeddyMocks.GlobalOverride.createScope(() => {
+            //
+            //                var globalStub = new TeddyMocks.GlobalStub<XMLHttpRequest>("XMLHttpRequest");
+            //                globalStub.stubs(s => s.send(undefined), false);
+            //
+            //                var request = new XMLHttpRequest();
+            //                request.send(undefined);
+            //
+            //                expect(globalStub.assertsThat(s => s.send(undefined)).wasCalled()).to.equal(true);
+            //            });
             done();
         });
     });
 });
+
+module GithubApi {
+
+    class UserLoginHandlerMock implements UserLoginHandler {
+        handleUserLogin(login: GithubLogin) { console.error("method should be replaced by mock"); }
+    }
+
+    describe('GithubApi:',() => {
+        describe('GithubLogin:',() => {
+
+            var loginHandler: TeddyMocks.Stub<UserLoginHandler> = null;
+            var githubLogin: GithubLogin = null;
+
+            beforeEach(function() {
+                loginHandler = new TeddyMocks.Stub<UserLoginHandler>(UserLoginHandlerMock);
+                githubLogin = new GithubLogin(loginHandler.object);
+                loginHandler.stubs(m => m.handleUserLogin(githubLogin));
+                expect(githubLogin).to.be.ok;
+            })
+
+            describe('#constructor()',() => {
+                it('should work properly',() => {
+                    expect(githubLogin).to.be.ok;
+                    expect(githubLogin).to.be.a.instanceOf(GithubLogin);
+                    expect(loginHandler.assertsThat(s => s.handleUserLogin(githubLogin)).wasCalledXTimes(0)).to.be.true;
+                });
+            });
+            describe('#getHello()',() => {
+                it('should work properly',() => {
+                    expect(githubLogin).to.be.ok;
+                    var helloGithub = githubLogin.getHello();
+                    expect(helloGithub).to.be.ok;
+                    expect(helloGithub.login).to.be.an.instanceOf(Function);
+                });
+            });
+        });
+    });
+}
