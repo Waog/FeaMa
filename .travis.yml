@@ -7,7 +7,4 @@ before_install:
   - npm install -g bower
 install:
   - npm install
-  - bower install
-  - tsd reinstall
-  - tsd rebundle
 before_script: grunt test
