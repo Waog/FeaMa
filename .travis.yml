@@ -4,9 +4,9 @@ node_js:
 before_install:
   - npm install -g grunt-cli
   - npm install -g tsd
+  - npm install -g bower
 install:
   - npm install
-  - pwd
   - bower install
   - run tsd reinstall
   - run tsd rebundle
