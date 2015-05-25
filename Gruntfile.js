@@ -30,6 +30,22 @@ module.exports = function (grunt) {
     // Project settings
     config: config,
 
+    shell: {
+    	options: {
+    		stderr: false
+    	},
+      install: {
+        command: [
+              'echo bower install',
+              'bower install',
+              'echo tsd reinstall',
+              'tsd reinstall',
+              'echo tsd rebundle',
+              'tsd rebundle'
+          ].join('&&')
+      }
+    },
+    
     focus: {
       test: {
         exclude: ['appjs2appts']
@@ -432,4 +448,6 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+  
+  grunt.registerTask('install', ['shell:install']);
 };
