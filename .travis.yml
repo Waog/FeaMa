@@ -6,6 +6,7 @@ before_install:
   - npm install -g tsd
 install:
   - npm install
+  - pwd
   - bower install
   - run tsd reinstall
   - run tsd rebundle
