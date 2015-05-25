@@ -8,6 +8,6 @@ before_install:
 install:
   - npm install
   - bower install
-  - run tsd reinstall
-  - run tsd rebundle
+  - tsd reinstall
+  - tsd rebundle
 before_script: grunt test
