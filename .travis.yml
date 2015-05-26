@@ -11,4 +11,10 @@ cache:
     - bower_components
     - node_modules
     - typings
+notifications:
+  email:
+    recipients:
+      - hello@waog.net
+    on_success: never
+    on_failure: never
     
