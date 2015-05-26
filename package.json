@@ -41,6 +41,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "install": "grunt install"
+    "install": "grunt install",
+    "test": "grunt test"
   }
 }
