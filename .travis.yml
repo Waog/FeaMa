@@ -16,6 +16,6 @@ cache:
 addons:
   apt:
     sources:
-      - https://dl-ssl.google.com/linux/linux_signing_key.pub
+      - http://dl.google.com/linux/chrome/deb/
     packages:
       - google-chrome-stable
