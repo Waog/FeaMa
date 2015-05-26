@@ -3,7 +3,10 @@ language: node_js
 node_js:
   - "0.12"
 before_install:
-  - echo $NODE_PATH
+  - cd /usr/local/lib/
+  - ls
+  - cd node_modules
+  - ls
   - exit -1
   - npm install -g grunt-cli
   - npm install -g tsd
