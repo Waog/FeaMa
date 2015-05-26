@@ -399,19 +399,27 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('test', function (target) {
+  	
+  	if (! target) {
+  	  target = 'once';
+  	}
+  	
     grunt.task.run([
       'clean:server',
       'typescript:test',
       'wiredep',
       'concurrent:test',
       'autoprefixer',
-      'continue:on',
-      'karma:once',
-      'continue:off'
     ]);
     
+    if (target === 'once') {
+    	grunt.task.run(['karma:once']);
+    }
     if (target === 'continuous') {
       grunt.task.run([
+        'continue:on',
+        'karma:once',
+        'continue:off',
         'karma:continuous:start',
         'focus:test'
       ]);
