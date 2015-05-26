@@ -13,7 +13,7 @@ module.exports = function(config) {
 	    frameworks : [
 	        'mocha-debug', 'mocha', 'chai', 'source-map-support'
 	    ],
-
+	    
 	    // list of files / patterns to load in the browser
 	    files : [
 	        // bower:js
@@ -28,23 +28,11 @@ module.exports = function(config) {
 
 	        'app/scripts/**/*.js',
 	        'test/spec/**/*.js',
-
-	        {
-	            pattern : 'app/scripts/**/*.js.map',
-	            included : false
-	        },
-	        {
-	            pattern : 'app/ts/**/*.ts',
-	            included : false
-	        },
-	        {
-	            pattern : 'test/spec/**/*.js.map',
-	            included : false
-	        },
-	        {
-	            pattern : 'test/spec/**/*.ts',
-	            included : false
-	        }
+	        
+	        {pattern: 'app/scripts/**/*.js.map', included: false},
+	        {pattern: 'app/ts/**/*.ts', included: false},
+	        {pattern: 'test/spec/**/*.js.map', included: false},
+	        {pattern: 'test/spec/**/*.ts', included: false}
 	    ],
 
 	    // list of files to exclude
@@ -54,7 +42,7 @@ module.exports = function(config) {
 	    // possible values: 'dots', 'progress'
 	    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
 	    reporters : [
-		    'progress', 'mocha'
+		    'mocha'
 	    ],
 
 	    // web server port
@@ -72,7 +60,7 @@ module.exports = function(config) {
 	    // available browser launchers:
 	    // https://npmjs.org/browse/keyword/karma-launcher
 	    browsers : [
-		    'Chrome'
+		    'PhantomJS'
 	    ],
 
 	    // reporter options
