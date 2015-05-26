@@ -31,9 +31,6 @@ module.exports = function (grunt) {
     config: config,
 
     shell: {
-    	options: {
-    		stderr: false
-    	},
       install: {
         command: [
               'echo bower install',
@@ -42,7 +39,7 @@ module.exports = function (grunt) {
               'tsd reinstall',
               'echo tsd rebundle',
               'tsd rebundle'
-          ].join('&&')
+        ].join('&&')
       }
     },
     
