@@ -3,14 +3,14 @@ language: node_js
 node_js:
   - "0.12"
 before_install:
+  - npm install -g grunt-cli
+  - npm install -g tsd
+  - npm install -g bower
   - cd /usr/local/lib/
   - ls
   - cd node_modules
   - ls
   - exit -1
-  - npm install -g grunt-cli
-  - npm install -g tsd
-  - npm install -g bower
 cache:
   directories:
     - bower_components
