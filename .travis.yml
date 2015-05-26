@@ -6,7 +6,6 @@ before_install:
   - npm install -g grunt-cli
   - npm install -g tsd
   - npm install -g bower
-  - echo $NODE_PATH
 cache:
   directories:
     - bower_components
