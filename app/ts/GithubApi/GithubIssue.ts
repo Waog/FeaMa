@@ -4,22 +4,22 @@
 module GithubApi {
 
     export class GithubIssue {
-        
+
         private helloGithub;
-        
+
         constructor(private githubResponse: any, private githubLogin: GithubLogin) {
             this.helloGithub = githubLogin;
         }
 
-        public setBody(body: string): void {
+        public setBody = (body: string) => {
             this.githubResponse.body = body;
         }
 
-        public getBody(): string {
+        public getBody: () => string = () => {
             return this.githubResponse.body;
         }
 
-        public commit(successHandler: (obj: any) => void, errorHandler: (err: any) => void): void {
+        public commit = (successHandler: (obj: any) => void, errorHandler: (err: any) => void) => {
             this.helloGithub.api('/repos/Waog/sandboxRepo/issues/' + this.githubResponse.number,
                 'PATCH', {
                     title: this.githubResponse.title,

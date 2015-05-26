@@ -2,8 +2,12 @@
 
 module GithubApi {
 
+    export interface UserLoginHandler {
+        handleUserLogin(githubLogin: GithubLogin): void;
+    }
+
     export class GithubLogin {
-        constructor(private loginHandler: (githubLogin: GithubLogin) => void) {
+        constructor(private loginHandler: UserLoginHandler) {
             hello.init({
                 github: '1418f544c5ed81d99e77'
             }, {
@@ -17,7 +21,7 @@ module GithubApi {
             this.displayLoginButton();
         }
 
-        displayLoginButton() {
+        private displayLoginButton = () => {
             $('#logout').append(
                 '<button onclick="hello(\'github\').login()">login</button>');
         }
@@ -31,7 +35,7 @@ module GithubApi {
             $('#profile').append(
                 '<img style="height: 50px; width: auto;" src="' + r.thumbnail + '" />');
 
-            this.loginHandler(this);
+            this.loginHandler.handleUserLogin(this);
         }
 
         private handleAuthLogout = (auth) => {

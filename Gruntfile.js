@@ -20,7 +20,8 @@ module.exports = function (grunt) {
   var config = {
     app: 'app',
     dist: 'dist',
-    tssrc: 'app/ts/**'
+    tssrc: 'app/ts/**',
+    tstest: 'test/spec/**'
   };
 
   // Define the configuration for all the tasks
@@ -29,6 +30,44 @@ module.exports = function (grunt) {
     // Project settings
     config: config,
 
+    shell: {
+      install: {
+        command: [
+              'echo bower install',
+              'bower install',
+              'echo tsd reinstall',
+              'tsd reinstall',
+              'echo tsd rebundle',
+              'tsd rebundle'
+        ].join('&&')
+      }
+    },
+    
+    focus: {
+      test: {
+        exclude: ['appjs2appts']
+      }
+    },
+    
+    karma: {
+    	options: {
+        configFile: 'karma.conf.js',
+      },
+      continuous: {
+        singleRun: false,
+        background: true
+      },
+      once: {
+        singleRun: true,
+        background: false
+      },
+      debug: {
+  	    browsers : ['Chrome'],
+        singleRun: false,
+        background: true
+      }
+    },
+    
     typescript: {
       base: {
         src: ['<%= config.tssrc %>/*.ts', 'typings/**/*.ts'],
@@ -39,6 +78,14 @@ module.exports = function (grunt) {
         	declaration: true
         }
       },
+      test: {
+      	src: ['<%= config.tssrc %>/*.ts', '<%= config.tstest %>/*.ts', 'typings/**/*.ts'],
+      	dest: 'test/spec/gen/allTsTests.js',
+      	options: {
+      		target: 'es5', //or es3 or es6
+      		sourceMap: true
+      	}
+      }
     },
     
     // Watches files for changes and runs tasks based on the changed files
@@ -47,18 +94,24 @@ module.exports = function (grunt) {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
-      ts: {
-        files: ['<%= config.tssrc %>/*.ts'],
-        tasks: ['typescript']
+      // run unit tests with karma (server needs to be already running)
+      karma: {
+        files: ['app/scripts/**/*.js', 'test/spec/**/*.js'],
+        // TODO: is also run on 'debug' target, not only on 'continuous', which works for the moment
+        tasks: ['karma:continuous:run'] // NOTE the :run flag
+      },
+      appjs2appts: {
+      	files: ['<%= config.tssrc %>/*.ts'],
+      	tasks: ['typescript:base']
+      },
+      js2testts: {
+        files: ['<%= config.tssrc %>/*.ts', '<%= config.tstest %>/*.ts'],
+        tasks: ['typescript:test']
       },
       jshint: {
       	files: ['<%= config.app %>/scripts/{,*/}*.js',
       	        '!<%= config.app %>/scripts/gen/*'],
       	tasks: ['jshint'],
-      },
-      jstest: {
-        files: ['test/spec/{,*/}*.js'],
-        tasks: ['test:watch']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -99,20 +152,6 @@ module.exports = function (grunt) {
           middleware: function(connect) {
             return [
               connect.static('.tmp'),
-              connect().use('/bower_components', connect.static('./bower_components')),
-              connect.static(config.app)
-            ];
-          }
-        }
-      },
-      test: {
-        options: {
-          open: false,
-          port: 9001,
-          middleware: function(connect) {
-            return [
-              connect.static('.tmp'),
-              connect.static('test'),
               connect().use('/bower_components', connect.static('./bower_components')),
               connect.static(config.app)
             ];
@@ -187,6 +226,23 @@ module.exports = function (grunt) {
       app: {
         ignorePath: /^\/|\.\.\//,
         src: ['<%= config.app %>/index.html']
+      },
+      test: { // some magic taken from here:
+							// https://github.com/yeoman/generator-angular/issues/856
+        devDependencies: true,
+        src: 'karma.conf.js',
+        ignorePath:  /\.\.\//,
+        fileTypes: {
+          js: {
+            block: /(([\s\t]*)\/\/\s*bower:*(\S*))(\n|\r|.)*?(\/\/\s*endbower)/gi,
+            detect: {
+              js: /'(.*\.js)'/gi
+            },
+            replace: {
+              js: '\'{{filePath}}\','
+            }
+          }
+        }
       }
     },
 
@@ -273,32 +329,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // By default, your `index.html`'s <!-- Usemin block --> will take care
-    // of minification. These next options are pre-configured if you do not
-    // wish to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css',
-    //         '<%= config.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/scripts/scripts.js': [
-    //         '<%= config.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
-
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
@@ -358,6 +388,7 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'autoprefixer',
+      'karma:continuous:start',
       'connect:livereload',
       'watch'
     ]);
@@ -369,20 +400,39 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('test', function (target) {
-    if (target !== 'watch') {
+  	
+  	if (! target) {
+  	  target = 'once';
+  	}
+  	
+    grunt.task.run([
+      'clean:server',
+      'typescript:test',
+      'wiredep',
+      'concurrent:test',
+      'autoprefixer',
+    ]);
+    
+    if (target === 'once') {
+    	grunt.task.run(['karma:once']);
+    }
+    if (target === 'continuous') {
       grunt.task.run([
-        'clean:server',
-        'concurrent:test',
-        'autoprefixer'
+        'continue:on',
+        'karma:once',
+        'continue:off',
+        'karma:continuous:start',
+        'focus:test'
       ]);
     }
-
-    grunt.task.run([
-      'connect:test',
-      'mocha'
-    ]);
+		if (target === 'debug') {
+			grunt.task.run([
+			  'karma:debug:start',
+			  'focus:test'
+	    ]);
+		}
   });
-
+  
   grunt.registerTask('build', [
     'clean:dist',
     'typescript',
@@ -404,4 +454,6 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+  
+  grunt.registerTask('install', ['shell:install']);
 };

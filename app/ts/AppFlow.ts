@@ -9,11 +9,11 @@ import GithubLogin = GithubApi.GithubLogin;
 
 module Stomap {
 
-    export class AppFlow {
+    export class AppFlow  implements GithubApi.UserLoginHandler {
         constructor() {
-            console.log('constructor ');
+            console.log('constructor');
 
-            var githubLogin = new GithubLogin(this.handleLogin);
+            var githubLogin = new GithubLogin(this);
         }
 
         private handleError = (e) => {
@@ -34,7 +34,7 @@ module Stomap {
             bugIssue0.commit(this.handleDebugSuccess, this.handleError);
         }
 
-        private handleLogin = (githubLogin: GithubLogin) => {
+        handleUserLogin = (githubLogin: GithubLogin) => {
             var issues: GithubIssues = new GithubIssues(githubLogin);
             issues.fetchByLabel('bug', this.handleGetBugIssues, this.handleError);
         }
