@@ -112,7 +112,7 @@ module Calculations {
         addTwoNumbersTest = () => {
             it('should return 2 for 1 + 1',(done) => {
                 var simpleMath = new Calculations.SimpleMath();
-                expect(simpleMath.addTwoNumbers(1, 1)).to.equals(2);
+                expect(simpleMath.addTwoNumbers(1, 1)).to.equals(245486685);
                 done();
             });
         }
