@@ -6,10 +6,10 @@ before_install:
   - npm install -g grunt-cli
   - npm install -g tsd
   - npm install -g bower
+  - echo $NODE_PATH
 cache:
   directories:
     - bower_components
     - node_modules
     - typings
-    - /home/travis/.nvm/versions/node/v0.12.4/lib/node_modules/
     
