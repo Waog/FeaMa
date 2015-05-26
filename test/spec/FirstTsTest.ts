@@ -12,57 +12,6 @@ chai.config.includeStack = true;
 /**
  * Unit tests
  */
-describe('Test Framework Tests:',() => {
-
-    describe('positive test',() => {
-        it('should never fail',(done) => {
-            expect(1).to.equals(1);
-            done();
-        });
-    });
-
-    describe('SimpleMath',() => {
-        it('should return 2 for 1 + 1',(done) => {
-            var simpleMath = new Calculations.SimpleMath();
-            expect(simpleMath.addTwoNumbers(1, 1)).to.equals(2);
-            done();
-        });
-    });
-
-    describe('TeddyMocks',() => {
-        it('should Stub objects like described in their readme',(done) => {
-            var expected = 123;
-            var stub = new TeddyMocks.Stub<GithubApi.GithubLogin>(GithubApi.GithubLogin);
-
-            stub.stubs(m => m.getHello()).andReturns(null);
-            expect(stub.object.getHello()).to.equal(null);
-
-            expect(stub.assertsThat(s => s.getHello()).wasCalled()).to.equal(true);
-
-            done();
-        });
-
-        it('should replace globals with GlobalStub',(done) => {
-            
-            //            var xmlhttp = new XMLHttpRequest();
-            //            
-            //            expect(xmlhttp.send).to.be.instanceOf(Function);
-            //            
-            //            TeddyMocks.GlobalOverride.createScope(() => {
-            //
-            //                var globalStub = new TeddyMocks.GlobalStub<XMLHttpRequest>("XMLHttpRequest");
-            //                globalStub.stubs(s => s.send(undefined), false);
-            //
-            //                var request = new XMLHttpRequest();
-            //                request.send(undefined);
-            //
-            //                expect(globalStub.assertsThat(s => s.send(undefined)).wasCalled()).to.equal(true);
-            //            });
-            done();
-        });
-    });
-});
-
 module GithubApi {
 
     class UserLoginHandlerMock implements UserLoginHandler {
@@ -100,3 +49,117 @@ module GithubApi {
         });
     });
 }
+
+module WaogTest {
+
+    export class ModuleTest {
+        constructor(private moduleName: string, private theModule) { }
+
+        public run = () => {
+            describe(this.moduleName + ':', this.runAllClasses);
+        }
+
+        private runAllClasses = () => {
+            for (var clazzName in this.theModule) {
+                var objectOfModulesClass = new this.theModule[clazzName]();
+                if (objectOfModulesClass instanceof Test) {
+                    (<Test> objectOfModulesClass).run(clazzName);
+                }
+            }
+        }
+    }
+
+    export class Test {
+
+        private static METHOD_PREFIX = 'Test';
+
+        private endsWith = (str, suffix) => {
+            return str.indexOf(suffix, str.length - suffix.length) !== -1;
+        }
+
+        public run = (clazzName: string) => {
+            describe(clazzName, this.runAllProperties);
+        }
+
+        private runAllProperties = () => {
+            for (var property in this) {
+                this.callPropertyIfTestMethod(property);
+            }
+        }
+
+        private callPropertyIfTestMethod = (property: any) => {
+            if (typeof property == 'string' && typeof this[property] == 'function') {
+                var propertyName = <string> property;
+                if (this.endsWith(propertyName, Test.METHOD_PREFIX)) {
+                    describe('.' + propertyName + '()', this[propertyName]);
+                }
+            }
+        }
+    }
+}
+
+module Calculations {
+
+    export class SimpleMathTest extends WaogTest.Test {
+
+        positiveTest = () => {
+            it('should never fail',(done) => {
+                expect(1).to.equals(1);
+                done();
+            });
+        }
+
+        addTwoNumbersTest = () => {
+            it('should return 2 for 1 + 1',(done) => {
+                var simpleMath = new Calculations.SimpleMath();
+                expect(simpleMath.addTwoNumbers(1, 1)).to.equals(2);
+                done();
+            });
+        }
+    }
+}
+new WaogTest.ModuleTest("Calculations", Calculations).run();
+
+module TeddyMocks {
+
+    export class StubTest extends WaogTest.Test {
+
+        exampleTest = () => {
+            it('should Stub objects like described in their readme',(done) => {
+                var expected = 123;
+                var stub = new TeddyMocks.Stub<GithubApi.GithubLogin>(GithubApi.GithubLogin);
+
+                stub.stubs(m => m.getHello()).andReturns(null);
+                expect(stub.object.getHello()).to.equal(null);
+
+                expect(stub.assertsThat(s => s.getHello()).wasCalled()).to.be.true;
+                done();
+            });
+        }
+    }
+
+    export class GlobalStubTest extends WaogTest.Test {
+
+        exampleTest = () => {
+            it('should replace globals with GlobalStub',(done) => {
+            
+                //            var xmlhttp = new XMLHttpRequest();
+                //            
+                //            expect(xmlhttp.send).to.be.instanceOf(Function);
+                //            
+                //            TeddyMocks.GlobalOverride.createScope(() => {
+                //
+                //                var globalStub = new TeddyMocks.GlobalStub<XMLHttpRequest>("XMLHttpRequest");
+                //                globalStub.stubs(s => s.send(undefined), false);
+                //
+                //                var request = new XMLHttpRequest();
+                //                request.send(undefined);
+                //
+                //                expect(globalStub.assertsThat(s => s.send(undefined)).wasCalled()).to.equal(true);
+                //            });
+                done();
+            });
+        }
+    }
+}
+new WaogTest.ModuleTest("TeddyMocks", TeddyMocks).run();
