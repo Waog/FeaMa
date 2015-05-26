@@ -13,4 +13,9 @@ cache:
     - bower_components
     - node_modules
     - typings
-    
+addons:
+  apt:
+    sources:
+      - https://dl-ssl.google.com/linux/linux_signing_key.pub
+    packages:
+      - google-chrome-stable
