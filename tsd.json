@@ -13,6 +13,12 @@
     },
     "jqueryui/jqueryui.d.ts": {
       "commit": "2e904baa7f46d2752b63e6aeb8687ed471e7569b"
+    },
+    "mocha/mocha.d.ts": {
+      "commit": "c2b70ba731a485968fa3e0561a32652f59787015"
+    },
+    "chai/chai.d.ts": {
+      "commit": "c2b70ba731a485968fa3e0561a32652f59787015"
     }
   }
 }
