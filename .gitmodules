@@ -1,3 +1,0 @@
-[submodule "test/TeddyMocks"]
-	path = test/TeddyMocks
-	url = https://github.com/mbraude/TeddyMocks.git
