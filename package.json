@@ -32,7 +32,10 @@
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.1.12",
     "karma-mocha": "^0.1.10",
+    "karma-mocha-debug": "^0.1.2",
+    "karma-mocha-reporter": "^1.0.2",
     "karma-phantomjs-launcher": "^0.1.4",
+    "karma-source-map-support": "^1.0.0",
     "mocha": "^2.2.5",
     "time-grunt": "^0.4.0",
     "typescript": "^1.5.0-beta"

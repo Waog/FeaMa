@@ -63,7 +63,8 @@ module.exports = function (grunt) {
       },
       debug: {
   	    browsers : ['Chrome'],
-      	singleRun: false
+        singleRun: false,
+        background: true
       }
     },
     

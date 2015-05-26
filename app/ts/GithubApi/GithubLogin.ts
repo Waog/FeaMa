@@ -21,7 +21,7 @@ module GithubApi {
             this.displayLoginButton();
         }
 
-        private displayLoginButton() {
+        private displayLoginButton = () => {
             $('#logout').append(
                 '<button onclick="hello(\'github\').login()">login</button>');
         }

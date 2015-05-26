@@ -1,4 +1,5 @@
 /// <reference path="../../app/ts/Calculations/Calculations.ts" />
+/// <reference path="../../app/ts/GithubApi/GithubLogin.ts" />
 /// <reference path="WaogTest.ts" />
 
 module GithubApi {
@@ -14,6 +15,7 @@ module GithubApi {
 
         beforeEach = () => {
             this.loginHandler = new TeddyMocks.Stub<UserLoginHandler>(UserLoginHandlerMock);
+            this.loginHandler = new TeddyMocks.Stub<UserLoginHandler>(TeddyMocks.Stub);
             this.githubLogin = new GithubLogin(this.loginHandler.object);
             this.loginHandler.stubs(m => m.handleUserLogin(this.githubLogin));
             expect(this.githubLogin).to.be.ok;
@@ -34,6 +36,21 @@ module GithubApi {
                 var helloGithub = this.githubLogin.getHello();
                 expect(helloGithub).to.be.ok;
                 expect(helloGithub.login).to.be.an.instanceOf(Function);
+            });
+        }
+    }
+    
+    export class GithubIssueTest extends WaogTest.ClassTest {
+
+        target: GithubIssue = null;
+
+        constructorTest = () => {
+            it('should work properly',() => {
+            	
+            	this.target = new GithubIssue(null, null);
+            	
+                expect(this.target).to.be.ok;
+                expect(this.target).to.be.a.instanceOf(GithubIssue);
             });
         }
     }
