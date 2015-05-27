@@ -43,89 +43,75 @@ module GithubApi {
 
         target: GithubIssue = null;
 
-        githubResponse = {
-            "url": "https://api.github.com/repos/Waog/sandboxRepo/issues/12",
-            "labels_url": "https://api.github.com/repos/Waog/sandboxRepo/issues/12/labels{/name}",
-            "comments_url": "https://api.github.com/repos/Waog/sandboxRepo/issues/12/comments",
-            "events_url": "https://api.github.com/repos/Waog/sandboxRepo/issues/12/events",
-            "html_url": "https://github.com/Waog/sandboxRepo/issues/12",
-            "id": 79036412,
-            "number": 12,
-            "title": "stomap",
-            "user": {
-                "login": "Waog",
-                "id": 5098472,
-                "avatar_url": "https://avatars.githubusercontent.com/u/5098472?v=3",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/Waog",
-                "html_url": "https://github.com/Waog",
-                "followers_url": "https://api.github.com/users/Waog/followers",
-                "following_url": "https://api.github.com/users/Waog/following{/other_user}",
-                "gists_url": "https://api.github.com/users/Waog/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/Waog/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/Waog/subscriptions",
-                "organizations_url": "https://api.github.com/users/Waog/orgs",
-                "repos_url": "https://api.github.com/users/Waog/repos",
-                "events_url": "https://api.github.com/users/Waog/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/Waog/received_events",
-                "type": "User",
-                "site_admin": false
-            },
-            "labels": [
-                {
-                    "url": "https://api.github.com/repos/Waog/sandboxRepo/labels/bug",
-                    "name": "bug",
-                    "color": "fc2929"
-                },
-                {
-                    "url": "https://api.github.com/repos/Waog/sandboxRepo/labels/duplicate",
-                    "name": "duplicate",
-                    "color": "cccccc"
-                },
-                {
-                    "url": "https://api.github.com/repos/Waog/sandboxRepo/labels/enhancement",
-                    "name": "enhancement",
-                    "color": "84b6eb"
-                }
-            ],
-            "state": "open",
-            "locked": false,
-            "assignee": {
-                "login": "Waog",
-                "id": 5098472,
-                "avatar_url": "https://avatars.githubusercontent.com/u/5098472?v=3",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/Waog",
-                "html_url": "https://github.com/Waog",
-                "followers_url": "https://api.github.com/users/Waog/followers",
-                "following_url": "https://api.github.com/users/Waog/following{/other_user}",
-                "gists_url": "https://api.github.com/users/Waog/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/Waog/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/Waog/subscriptions",
-                "organizations_url": "https://api.github.com/users/Waog/orgs",
-                "repos_url": "https://api.github.com/users/Waog/repos",
-                "events_url": "https://api.github.com/users/Waog/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/Waog/received_events",
-                "type": "User",
-                "site_admin": false
-            },
-            "milestone": null,
-            "comments": 0,
-            "created_at": "2015-05-21T15:06:11Z",
-            "updated_at": "2015-05-22T23:33:34Z",
-            "closed_at": null,
-            "body": "foo STOMAP STOMAP STOMAP STOMAP STOMAP STOMAP STOMAP STOMAP STOMAP",
-            "closed_by": null
+        githubResponse: any = null;
+
+        ghLoginMock: TeddyMocks.Stub<GithubLogin> = null;
+
+        beforeEach = (done) => {
+            // TODO: use a relative path here
+            $.getJSON("base/test/res/githubResponses/issue-authorized.json",(json) => {
+
+                this.githubResponse = json;
+                expect(this.githubResponse).to.be.ok;
+                expect(this.githubResponse.url).to.be.ok;
+                this.ghLoginMock = new TeddyMocks.Stub<GithubLogin>(GithubLogin);
+                this.target = new GithubIssue(this.githubResponse, this.ghLoginMock.object);
+                done();
+            });
         }
 
         constructorTest = () => {
             it('should work properly',() => {
 
-                var ghLoginMock = new TeddyMocks.Stub<GithubLogin>(GithubLogin);
-                this.target = new GithubIssue(this.githubResponse, ghLoginMock.object);
-
                 expect(this.target).to.be.ok;
                 expect(this.target).to.be.a.instanceOf(GithubIssue);
+                expect(this.target.getBody()).to.be.a('string');
+                expect(this.target.getBody()).to.equal(this.githubResponse.body);
+            });
+        }
+
+        getBodyTest = () => {
+            it('should return the initialized value',() => {
+
+                expect(this.target.getBody()).to.be.a('string');
+                expect(this.target.getBody()).to.equal(this.githubResponse.body);
+            });
+        }
+
+        setBodyTest = () => {
+            it('should be returned by the getter after setting',() => {
+
+                expect(this.target.getBody()).to.equal(this.githubResponse.body);
+                var newBody: string = 'some string ' + Math.random();
+                this.target.setBody(newBody);
+                expect(this.target.getBody()).to.equal(newBody);
+            });
+
+            it('should not influence the original response',() => {
+
+                expect(this.target.getBody()).to.equal(this.githubResponse.body);
+                this.target.setBody('some string ' + Math.random());
+                expect(this.target.getBody()).to.not.equal(this.githubResponse.body);
+            });
+        }
+
+        commitTest = () => {
+            it('should call either successhandler or errorhandler with a legal object',(done) => {
+
+                this.target = new GithubIssue(this.githubResponse, new GithubLogin(null));
+                
+                var commitHandler: GithubApi.IssueCommitHandler = {
+                    handleGithubCommitSuccess: (obj: any) => {
+                        expect(obj).to.be.ok;
+                        done();
+                    },
+                    handleGithubCommitError: (err: any) => {
+                        expect(err).to.be.ok;
+                        done();
+                    }
+                }
+
+                this.target.commit(commitHandler);
             });
         }
     }

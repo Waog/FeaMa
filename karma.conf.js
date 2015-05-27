@@ -26,13 +26,14 @@ module.exports = function(config) {
 	        'bower_components/hello/src/modules/github.js',
 	        // endbower
 
-	        'app/scripts/**/*.js',
 	        'test/spec/**/*.js',
 	        
+	        {pattern: 'app/scripts/**/*.js', included: false},
 	        {pattern: 'app/scripts/**/*.js.map', included: false},
 	        {pattern: 'app/ts/**/*.ts', included: false},
 	        {pattern: 'test/spec/**/*.js.map', included: false},
-	        {pattern: 'test/spec/**/*.ts', included: false}
+	        {pattern: 'test/spec/**/*.ts', included: false},
+	        {pattern: 'test/res/**/*', included: false}
 	    ],
 
 	    // list of files to exclude
