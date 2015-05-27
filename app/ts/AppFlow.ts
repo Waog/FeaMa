@@ -9,19 +9,25 @@ import GithubLogin = GithubApi.GithubLogin;
 
 module Stomap {
 
-    export class AppFlow  implements GithubApi.UserLoginHandler {
+    export class AppFlow implements GithubApi.UserLoginHandler, GithubApi.IssueCommitHandler {
         constructor() {
             console.log('constructor');
 
             var githubLogin = new GithubLogin(this);
         }
 
-        private handleError = (e) => {
-            console.log('handleError ', e);
+        handleGithubCommitError = (e) => {
+            // TODO: implement method properly
+            console.log('Issue was not commited: ', e);
+        }
+        
+        handleError = (e) => {
+            console.log('Some error occured: ', e);
         }
 
-        private handleDebugSuccess = (obj1, obj2?, obj3?) => {
-            console.log('handleDebugSuccess ', obj1, obj2, obj3);
+        handleGithubCommitSuccess = (obj1:any) => {
+            // TODO: implement method properly
+            console.log('Issue was successfully commited: ', obj1);
         }
 
         private handleGetBugIssues = (bugIssues: GithubIssues) => {
@@ -31,7 +37,7 @@ module Stomap {
 
             bugIssue0.setBody(bugIssue0.getBody() + ' STOMAP');
 
-            bugIssue0.commit(this.handleDebugSuccess, this.handleError);
+            bugIssue0.commit(this);
         }
 
         handleUserLogin = (githubLogin: GithubLogin) => {

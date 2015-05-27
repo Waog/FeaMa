@@ -74,7 +74,8 @@ module WaogTest {
             }
         }
 
-        public beforeEach = () => {
+        public beforeEach = (done?: () => void) => {
+            done();
         }
     }
 }

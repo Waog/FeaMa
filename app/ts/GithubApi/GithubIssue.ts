@@ -3,12 +3,19 @@
 
 module GithubApi {
 
+    export interface IssueCommitHandler {
+        handleGithubCommitSuccess(obj: any): void;
+        handleGithubCommitError(err: any): void;
+    }
+
     export class GithubIssue {
 
-        private helloGithub;
+        private helloGithub: HelloJSStaticNamed;
+        private githubResponse;
 
-        constructor(private githubResponse: any, private githubLogin: GithubLogin) {
-            this.helloGithub = githubLogin;
+        constructor(githubResponse: any, private githubLogin: GithubLogin) {
+            this.githubResponse = jQuery.extend(true, {}, githubResponse); // deep copy
+            this.helloGithub = githubLogin.getHello();
         }
 
         public setBody = (body: string) => {
@@ -19,7 +26,7 @@ module GithubApi {
             return this.githubResponse.body;
         }
 
-        public commit = (successHandler: (obj: any) => void, errorHandler: (err: any) => void) => {
+        public commit = (resultHandler: IssueCommitHandler) => {
             this.helloGithub.api('/repos/Waog/sandboxRepo/issues/' + this.githubResponse.number,
                 'PATCH', {
                     title: this.githubResponse.title,
@@ -28,12 +35,10 @@ module GithubApi {
                     state: this.githubResponse.state,
                     milestone: this.githubResponse.milestone,
                     labels: this.labelResponseToRequest(this.githubResponse.labels)
-                }).then(successHandler, errorHandler);
+                }).then(resultHandler.handleGithubCommitSuccess, resultHandler.handleGithubCommitError);
         }
 
         private labelResponseToRequest = (issueResponse: any[]) => {
-            console.log('labelResponseToRequest ', issueResponse);
-
             var result: string[] = [];
             for (var i = 0; i < issueResponse.length; i++) {
                 result.push(issueResponse[i].name);

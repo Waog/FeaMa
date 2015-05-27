@@ -6,19 +6,23 @@ The website was initialized using [yo](http://yeoman.io/) with the [webapp gener
 ### Installation
 1. Checkout the repository
 1. Navigate to the working directory (comand line)
-  1. run `npm install`
-  1. run `npm install -g mocha`
+  1. run `npm install -g grunt cli`
   1. run `npm install -g tsd`
-  1. run `bower install`
-  1. run `tsd reinstall`
-  1. run `tsd rebundle`
-  1. run `grunt serve`
+  1. run `npm install -g bower`
+  1. run `npm install`
+
+### Running
+Run `grunt serve`
 
 The server should start and open a browser tab.
 
 #### Tests
-To run the tests navigate into the `/test` folder and run `bower install` there.
-After that tests can be started using `grunt test` in the *root folder*.
+Run `grunt test` to start a single build and test.
+
+There are additional options to run tests:
+- run `grunt test:once` does the same as `grunt test`. Works headless (PhantomJS).
+- run `grunt test:continuous` watches for file changes. Each ts-file change triggers a build and a new test run. Works headless (PhantomJS).
+- run `grunt test:debug` like `grunt test:continuous` but runs in Chrome, with better debugging capabilities.
 
 #### Distributing
 Running `grunt` in the *root folder* creates a `dist` folder with the content to be uploaded.
