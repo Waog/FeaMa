@@ -21,7 +21,7 @@ module GithubApi {
         }
 
         get(index: number): GithubIssue {
-            return new GithubIssue(this.githubIssues.data[0], this.githubLogin);
+            return new GithubIssue(this.githubIssues.data[0], this.githubLogin.getHello());
         }
 
 

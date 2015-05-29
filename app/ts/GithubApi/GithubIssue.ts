@@ -10,12 +10,10 @@ module GithubApi {
 
     export class GithubIssue {
 
-        private helloGithub: HelloJSStaticNamed;
         private githubResponse;
 
-        constructor(githubResponse: any, private githubLogin: GithubLogin) {
+        constructor(githubResponse: any, private helloGithub: HelloJSStaticNamed) {
             this.githubResponse = jQuery.extend(true, {}, githubResponse); // deep copy
-            this.helloGithub = githubLogin.getHello();
         }
 
         public setBody = (body: string) => {

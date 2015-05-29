@@ -3,13 +3,34 @@
 
 module GithubApi {
 
+    class HelloJSStaticStub implements HelloJSStatic {
+        function(network: string) { }
+        init = null;
+        login = null;
+        logout = null;
+        getAuthResponse = null;
+        service = null;
+        settings = null;
+        then = null;
+        on = null;
+        off = null;
+        findEvents = null;
+        emit = null;
+        emitAfter = null;
+        success = null;
+        error = null;
+        complete = null;
+    }
+
     export class GithubIssueTest extends WaogTest.ClassTest {
 
         target: GithubIssue = null;
 
         githubResponse: any = null;
 
-        ghLoginMock: TeddyMocks.Stub<GithubLogin> = null;
+        helloMock: TeddyMocks.Stub<HelloJSStaticNamed> = null;
+
+        thenStub: HelloJSStatic = null;
 
         beforeEach = (done) => {
             // TODO: use a relative path here
@@ -18,8 +39,8 @@ module GithubApi {
                 this.githubResponse = json;
                 expect(this.githubResponse).to.be.ok;
                 expect(this.githubResponse.url).to.be.ok;
-                this.ghLoginMock = new TeddyMocks.Stub<GithubLogin>(GithubLogin);
-                this.target = new GithubIssue(this.githubResponse, this.ghLoginMock.object);
+                this.helloMock = new TeddyMocks.Stub<HelloJSStaticNamed>(hello);
+                this.target = new GithubIssue(this.githubResponse, this.helloMock.object);
                 done();
             });
         }
@@ -59,11 +80,14 @@ module GithubApi {
             });
         }
 
-        commitTest = () => {
+        commitTest = (done) => {
             it('should call either successhandler or errorhandler with a legal object',(done) => {
 
-                this.target = new GithubIssue(this.githubResponse, new GithubLogin(null));
-                
+
+                this.helloMock.stubs(m => m.api()).andReturns(thenStub);
+
+                this.target = new GithubIssue(this.githubResponse, this.helloMock.object);
+
                 var commitHandler: GithubApi.IssueCommitHandler = {
                     handleGithubCommitSuccess: (obj: any) => {
                         expect(obj).to.be.ok;
