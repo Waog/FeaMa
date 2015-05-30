@@ -25,6 +25,14 @@ module GithubApi {
         public getBody: () => string = () => {
             return this.githubResponse.body;
         }
+        
+        public getTitle: () => string = () => {
+            return this.githubResponse.title;
+        }
+
+        public getNumber: () => number = () => {
+            return this.githubResponse.number;
+        }
 
         public commit = (resultHandler: IssueCommitHandler) => {
             this.helloGithub.api('/repos/Waog/sandboxRepo/issues/' + this.githubResponse.number,
@@ -44,6 +52,15 @@ module GithubApi {
                 result.push(issueResponse[i].name);
             }
             return result;
+        }
+
+        public hasLabel = (label: string) => {
+            for (var i = 0; i < this.githubResponse.labels.length; i++) {
+                if (this.githubResponse.labels[i].name === label) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
