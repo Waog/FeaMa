@@ -9,7 +9,7 @@ import GithubLogin = GithubApi.GithubLogin;
 
 module Stomap {
 
-    export class AppFlow implements GithubApi.UserLoginHandler, GithubApi.IssueCommitHandler, GithubApi.IssuesFetchedHandler {
+    export class AppFlow implements GithubApi.UserLoginHandler, GithubApi.IssuesFetchedHandler {
 
         constructor() {
             console.log('constructor');
@@ -31,16 +31,6 @@ module Stomap {
 
         handleFetchedIssuesError = (e) => {
             console.log('Error Fetching Issues: ', e);
-        }
-
-        handleGithubCommitSuccess = (obj1: any) => {
-            // TODO: implement method properly
-            console.log('Issue was successfully commited: ', obj1);
-        }
-
-        handleGithubCommitError = (e) => {
-            // TODO: implement method properly
-            console.log('Issue was not commited: ', e);
         }
     };
 }

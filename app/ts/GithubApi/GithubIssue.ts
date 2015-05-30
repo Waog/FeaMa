@@ -12,6 +12,7 @@ module GithubApi {
 
         private helloGithub: HelloJSStaticNamed;
         private githubResponse;
+        private parent;
 
         constructor(githubResponse: any, private githubLogin: GithubLogin) {
             this.githubResponse = jQuery.extend(true, {}, githubResponse); // deep copy
@@ -25,7 +26,7 @@ module GithubApi {
         public getBody: () => string = () => {
             return this.githubResponse.body;
         }
-        
+
         public getTitle: () => string = () => {
             return this.githubResponse.title;
         }
@@ -61,6 +62,18 @@ module GithubApi {
                 }
             }
             return false;
+        }
+
+        public setParent = (parent: GithubIssue) => {
+            this.parent = parent;
+        }
+
+        public getParent: () => GithubIssue = () => {
+            return this.parent;
+        }
+        
+        public getHtmlUrl: () => string = () => {
+           return this.githubResponse.html_url; 
         }
     }
 }

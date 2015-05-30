@@ -2,7 +2,7 @@
 
 module Stomap {
 
-    export class Board {
+    export class Board implements GithubApi.IssueCommitHandler {
         constructor() {
         }
 
@@ -23,7 +23,46 @@ module Stomap {
         }
 
         private dropHandler = (event, draggable) => {
-            console.log('dropped!: ', event, event.target, event.toElement, draggable);
+            console.log('dropped!: ', this, event, event.target, event.toElement, draggable);
+            console.log('data:', $(event.toElement).data('model'));
+            console.log('target feature:', $(event.target).children('div.feature:first-child').data('model'));
+            var draggedIssue: GithubIssue = $(event.toElement).data('model');
+            var oldFeature = draggedIssue.getParent();
+            var newFeature = $(event.target).children('div.feature:first-child').data('model');
+            this.removeReference(oldFeature, draggedIssue);
+            this.addReference(newFeature, draggedIssue);
+            oldFeature.commit(this);
+            newFeature.commit(this);
+        }
+
+        handleGithubCommitSuccess = (obj1: any) => {
+            // TODO: implement method properly
+            console.log('Issue was successfully commited: ', obj1);
+        }
+
+        handleGithubCommitError = (e) => {
+            // TODO: implement method properly
+            console.log('Issue was not commited: ', e);
+        }
+
+        private removeReference = (featureIssue: GithubIssue, removedSubIssue: GithubIssue) => {
+            var oldBody: string = featureIssue.getBody();
+
+            var regexToRemove = new RegExp('\n- \\[[ x]\\] #' + removedSubIssue.getNumber() + ' $', 'm');
+            var subst = '';
+
+            var newBody = oldBody.replace(regexToRemove, subst);
+            featureIssue.setBody(newBody);
+        }
+
+        private addReference = (featureIssue: GithubIssue, addedSubIssue: GithubIssue) => {
+            var oldBody: string = featureIssue.getBody();
+
+            var regexToRemove = new RegExp('(\\*\\*Sub-Issues:\\*\\*$)', 'm');
+            var subst = '$1\n- [ ] #' + addedSubIssue.getNumber() + ' ';
+
+            var newBody = oldBody.replace(regexToRemove, subst);
+            featureIssue.setBody(newBody);
         }
 
         private getSubIssues = (featureIssue: GithubIssue, allIssues: GithubIssues) => {
@@ -34,6 +73,7 @@ module Stomap {
                 var regexToFindIssueReference = '#' + issue.getNumber() + '([^a-zA-Z0-9]|$)';
 
                 if (featureIssue.getBody().match(regexToFindIssueReference)) {
+                    issue.setParent(featureIssue);
                     result.push(issue);
                 }
             }
@@ -60,8 +100,9 @@ module Stomap {
             portlet.data("model", issue);
             portlet.data("colIndex", columnIndex);
 
-            portlet.append('<div class="portlet-header ui-widget-header ui-corner-all">' +
-                issue.getTitle() + '</div>');
+            portlet.append('<div class="portlet-header ui-widget-header ui-corner-all">'
+                + '<a href="' + issue.getHtmlUrl() + '">#' +
+                issue.getNumber() + '</a> ' + issue.getTitle() + '</div>');
             var portletHeader = portlet.find('.portlet-header');
 
             portletHeader
