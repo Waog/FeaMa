@@ -46,17 +46,17 @@
     <script src="bower_components/github-api/github.js"></script>
     <script src="bower_components/hello/dist/hello.all.js"></script>
     <script src="bower_components/hello/src/modules/github.js"></script>
-    <script src="bower_components/angular2/angular.js"></script>
     <script src="bower_components/traceur/traceur.js"></script>
     <script src="bower_components/traceur-runtime/traceur-runtime.js"></script>
     <script src="bower_components/es6-module-loader/dist/es6-module-loader.src.js"></script>
     <script src="bower_components/system.js/dist/system.src.js"></script>
+    <script src="bower_components/angular2/index.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <my-app></my-app>
     <script>
-      System.paths['angular2/angular2'] = './bower_components/angular2/angular.js';
+      System.paths['angular2/angular2'] = './bower_components/angular2/index.js';
       System.transpiler = 'typescript';
 	  System.import('scripts/gen/MyAngular');
 	</script>

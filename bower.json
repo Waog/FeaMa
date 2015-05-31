@@ -8,7 +8,7 @@
     "github-api": "~0.10.6",
     "underscore": "~1.8.3",
     "hello": "~1.6.0",
-    "angular2": "~1.4.0",
+    "angular2": "https://code.angularjs.org/2.0.0-alpha.25/angular2.dev.js",
     "system.js": "~0.16.11",
     "traceur-runtime": "~0.0.89",
     "es6-module-loader": "~0.16.6",
@@ -20,6 +20,11 @@
         "jquery-ui.js",
         "themes/smoothness/jquery-ui.css"
       ]
+    },
+    "angular2": {
+      "dependencies": {
+    	"system.js": "*"
+      }
     },
     "system.js": {
       "main": [
