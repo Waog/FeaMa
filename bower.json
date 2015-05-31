@@ -7,7 +7,12 @@
     "jqueryui-touch-punch": "*",
     "github-api": "~0.10.6",
     "underscore": "~1.8.3",
-    "hello": "~1.6.0"
+    "hello": "~1.6.0",
+    "angular2": "~1.4.0",
+    "system.js": "~0.16.11",
+    "traceur-runtime": "~0.0.89",
+    "es6-module-loader": "~0.16.6",
+    "traceur": "~0.0.89"
   },
   "overrides": {
     "jquery-ui": {
@@ -15,6 +20,23 @@
         "jquery-ui.js",
         "themes/smoothness/jquery-ui.css"
       ]
+    },
+    "system.js": {
+      "main": [
+        "dist/system.src.js"
+      ],
+      "dependencies": {
+    	"es6-module-loader": "*"
+      }
+    },
+    "es6-module-loader": {
+      "main": [
+        "dist/es6-module-loader.src.js"
+      ],
+      "dependencies": {
+    	"traceur": "*",
+    	"traceur-runtime": "*"
+      }
     },
     "github-api": {
       "dependencies": {
@@ -27,5 +49,6 @@
         "src/modules/github.js"
       ]
     }
-  }
+  },
+  "devDependencies": {}
 }

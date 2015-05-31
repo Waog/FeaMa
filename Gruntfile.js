@@ -71,19 +71,21 @@ module.exports = function (grunt) {
     typescript: {
       base: {
         src: ['<%= config.tssrc %>/*.ts', 'typings/**/*.ts'],
-        dest: '<%= config.app %>/scripts/gen/stomap.js',
+        dest: '<%= config.app %>/scripts/gen/',
         options: {
-        	target: 'es5', //or es3 or es6
+        	target: 'es5', // es3, es5 or es6
         	sourceMap: true,
-        	declaration: true
+        	declaration: true,
+        	module: 'commonjs' // amd or commonjs 
         }
       },
       test: {
       	src: ['<%= config.tssrc %>/*.ts', '<%= config.tstest %>/*.ts', 'typings/**/*.ts'],
-      	dest: 'test/spec/gen/allTsTests.js',
+      	dest: 'test/spec/gen/',
       	options: {
       		target: 'es5', //or es3 or es6
-      		sourceMap: true
+      		sourceMap: true,
+      		module: 'commonjs' // amd or commonjs 
       	}
       }
     },

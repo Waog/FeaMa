@@ -24,6 +24,11 @@ module.exports = function(config) {
 	        'bower_components/github-api/github.js',
 	        'bower_components/hello/dist/hello.all.js',
 	        'bower_components/hello/src/modules/github.js',
+	        'bower_components/angular2/angular.js',
+	        'bower_components/traceur/traceur.js',
+	        'bower_components/traceur-runtime/traceur-runtime.js',
+	        'bower_components/es6-module-loader/dist/es6-module-loader.src.js',
+	        'bower_components/system.js/dist/system.src.js',
 	        // endbower
 
 	        'test/spec/**/*.js',
