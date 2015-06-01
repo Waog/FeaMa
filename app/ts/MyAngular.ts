@@ -6,9 +6,7 @@ import {Component, View, bootstrap, For, If} from 'angular2/angular2';
   selector: 'child'
 })
 @View({
-  template: `
-    <p> {{ message }} </p>
-  `
+  templateUrl: 'temp.html'
 })
 class ChildComponent {
   message: string;
@@ -21,11 +19,7 @@ class ChildComponent {
   selector: 'stomap'
 })
 @View({
-  template: `
-    <h1>{{ message }}</h1>
-    <child></child>
-    <child></child>
-  `,
+  templateUrl: 'someTemplate.html',
   directives: [ChildComponent]
 })
 class ParentComponent {

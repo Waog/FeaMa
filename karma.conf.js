@@ -29,6 +29,7 @@ module.exports = function(config) {
 	        'bower_components/es6-module-loader/dist/es6-module-loader.src.js',
 	        'bower_components/system.js/dist/system.src.js',
 	        'bower_components/angular2/index.js',
+	        'bower_components/bootstrap/dist/js/bootstrap.js',
 	        // endbower
 
 	        'test/spec/**/*.js',

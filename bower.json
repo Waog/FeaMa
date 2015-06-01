@@ -12,9 +12,19 @@
     "system.js": "~0.16.11",
     "traceur-runtime": "~0.0.89",
     "es6-module-loader": "~0.16.6",
-    "traceur": "~0.0.89"
+    "traceur": "~0.0.89",
+    "jquery-ui-bootstrap": "Waog/jquery-ui-bootstrap",
+    "bootstrap": "~3.3.4"
   },
   "overrides": {
+    "jquery-ui-bootstrap": {
+      "dependencies": {
+        "bootstrap": "*"
+      },
+      "main": [
+        "css/custom-theme/jquery-ui-1.10.3.theme.css"
+      ]
+    },
     "jquery-ui": {
       "main": [
         "jquery-ui.js",
@@ -23,7 +33,7 @@
     },
     "angular2": {
       "dependencies": {
-    	"system.js": "*"
+        "system.js": "*"
       }
     },
     "system.js": {
@@ -31,7 +41,7 @@
         "dist/system.src.js"
       ],
       "dependencies": {
-    	"es6-module-loader": "*"
+        "es6-module-loader": "*"
       }
     },
     "es6-module-loader": {
@@ -39,8 +49,8 @@
         "dist/es6-module-loader.src.js"
       ],
       "dependencies": {
-    	"traceur": "*",
-    	"traceur-runtime": "*"
+        "traceur": "*",
+        "traceur-runtime": "*"
       }
     },
     "github-api": {
