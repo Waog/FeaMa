@@ -1,12 +1,38 @@
 /// <reference path="tsd.d.ts" />
 
-import { Component, View, bootstrap } from 'angular2/angular2';
+import {Component, View, bootstrap, For, If} from 'angular2/angular2';
+
 @Component({
-    selector: 'my-app'
+  selector: 'child'
 })
 @View({
-    template: '<h1>My first Angular 2 App</h1>'
+  template: `
+    <p> {{ message }} </p>
+  `
 })
-class AppComponent {
+class ChildComponent {
+  message: string;
+  constructor() {
+    this.message = "I'm the child";
+  }
 }
-bootstrap(AppComponent);
+
+@Component({
+  selector: 'stomap'
+})
+@View({
+  template: `
+    <h1>{{ message }}</h1>
+    <child></child>
+    <child></child>
+  `,
+  directives: [ChildComponent]
+})
+class ParentComponent {
+  message: string;
+  
+  constructor() {
+    this.message = "I'm the parent";
+  }
+}
+bootstrap(ParentComponent);

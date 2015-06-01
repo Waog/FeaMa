@@ -23,6 +23,7 @@
     "grunt-rev": "^0.1.0",
     "grunt-shell": "^1.1.2",
     "grunt-svgmin": "^0.4.0",
+    "grunt-ts": "git://github.com/TypeStrong/grunt-ts.git#70a0e3ce3400beffa4085097f3642c7291d56178",
     "grunt-typescript": "^0.6.2",
     "grunt-usemin": "^2.3.0",
     "grunt-wiredep": "^1.7.0",

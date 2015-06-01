@@ -68,6 +68,30 @@ module.exports = function (grunt) {
       }
     },
     
+    ts: {
+    	base: {
+    		src: ['app/ts/**/*.ts', 'typings/**/*.ts'],
+    		dest: 'app/scripts/gen/',
+    		options: {
+    			target: 'es5', // es3, es5 or es6
+    			sourceMap: true,
+    			declaration: true,
+    			module: 'commonjs', // amd or commonjs
+    			emitDecoratorMetadata: true
+    		}
+    	},
+    	test: {
+    		src: ['app/ts/**/*.ts', 'test/spec/**/*.ts', 'typings/**/*.ts'],
+    		dest: 'test/spec/gen/',
+    		options: {
+    			target: 'es5', //or es3 or es6
+    			sourceMap: true,
+    			module: 'commonjs', // amd or commonjs
+    			emitDecoratorMetadata: true
+    		}
+    	}
+    },
+    
     typescript: {
       base: {
         src: ['<%= config.tssrc %>/*.ts', 'typings/**/*.ts'],
@@ -104,11 +128,11 @@ module.exports = function (grunt) {
       },
       appjs2appts: {
       	files: ['<%= config.tssrc %>/*.ts'],
-      	tasks: ['typescript:base']
+      	tasks: ['ts:base']
       },
       js2testts: {
         files: ['<%= config.tssrc %>/*.ts', '<%= config.tstest %>/*.ts'],
-        tasks: ['typescript:test']
+        tasks: ['ts:test']
       },
       jshint: {
       	files: ['<%= config.app %>/scripts/{,*/}*.js',
@@ -386,7 +410,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'typescript',
+      'ts',
       'wiredep',
       'concurrent:server',
       'autoprefixer',
@@ -409,7 +433,7 @@ module.exports = function (grunt) {
   	
     grunt.task.run([
       'clean:server',
-      'typescript:test',
+      'ts:test',
       'wiredep',
       'concurrent:test',
       'autoprefixer',
@@ -437,7 +461,7 @@ module.exports = function (grunt) {
   
   grunt.registerTask('build', [
     'clean:dist',
-    'typescript',
+    'ts',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
