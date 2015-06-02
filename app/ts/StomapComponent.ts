@@ -1,28 +1,16 @@
 /// <reference path="tsd.d.ts" />
 
 import {Component, View, bootstrap, For, If} from 'angular2/angular2';
-
-@Component({
-    selector: 'child'
-})
-@View({
-    templateUrl: 'temp.html'
-})
-class ChildComponent {
-    message: string;
-    constructor() {
-        this.message = "I'm the child";
-    }
-}
+import {BoardComponent} from './BoardComponent';
 
 @Component({
     selector: 'stomap'
 })
 @View({
-    templateUrl: 'someTemplate.html',
-    directives: [ChildComponent]
+    templateUrl: 'stomapTemplate.html',
+    directives: [BoardComponent]
 })
-class ParentComponent {
+class StomapComponent {
     message: string;
 
     constructor() {
@@ -31,4 +19,4 @@ class ParentComponent {
         $('.boardcard').draggable();
     }
 }
-bootstrap(ParentComponent);
+bootstrap(StomapComponent);
