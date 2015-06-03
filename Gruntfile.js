@@ -43,12 +43,6 @@ module.exports = function (grunt) {
       }
     },
     
-    focus: {
-      test: {
-        exclude: ['appjs2appts']
-      }
-    },
-    
     karma: {
     	options: {
         configFile: 'karma.conf.js',
@@ -126,11 +120,11 @@ module.exports = function (grunt) {
         // TODO: is also run on 'debug' target, not only on 'continuous', which works for the moment
         tasks: ['karma:continuous:run'] // NOTE the :run flag
       },
-      appjs2appts: {
+      appts2appjs: {
       	files: ['<%= config.tssrc %>/*.ts'],
       	tasks: ['ts:base']
       },
-      js2testts: {
+      ts2testjs: {
         files: ['<%= config.tssrc %>/*.ts', '<%= config.tstest %>/*.ts'],
         tasks: ['ts:test']
       },
@@ -148,20 +142,15 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          livereload: '<%= connect.options.livereload %>'
+          livereload: true
         },
         files: [
           '<%= config.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
+          '<%= config.app %>/scripts/{,*/}*.js',
           '<%= config.app %>/images/{,*/}*'
         ]
-      },
-      livereloadjs: {
-        files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        options: {
-          livereload: true
-        }
-      },
+      }
     },
 
     // The actual grunt server settings
@@ -385,6 +374,10 @@ module.exports = function (grunt) {
 
     // Run some tasks in parallel to speed up build process
     concurrent: {
+      options: {
+        logConcurrentOutput: true,
+        limit: 30
+      },
       server: [
         'copy:styles'
       ],
@@ -395,6 +388,16 @@ module.exports = function (grunt) {
         'copy:styles',
         'imagemin',
         'svgmin'
+      ],
+      watchAll: [
+        'watch:bower',
+        'watch:karma',
+        'watch:appts2appjs',
+        'watch:ts2testjs',
+        'watch:jshint',
+        'watch:gruntfile',
+        'watch:styles',
+        'watch:livereload'
       ]
     }
   });
@@ -416,7 +419,7 @@ module.exports = function (grunt) {
       'autoprefixer',
       'karma:continuous:start',
       'connect:livereload',
-      'watch'
+      'concurrent:watchAll'
     ]);
   });
 
@@ -448,13 +451,13 @@ module.exports = function (grunt) {
         'karma:once',
         'continue:off',
         'karma:continuous:start',
-        'focus:test'
+        'concurrent:watchAll'
       ]);
     }
 		if (target === 'debug') {
 			grunt.task.run([
 			  'karma:debug:start',
-			  'focus:test'
+			  'concurrent:watchAll'
 	    ]);
 		}
   });

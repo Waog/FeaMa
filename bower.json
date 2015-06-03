@@ -27,8 +27,7 @@
     },
     "jquery-ui": {
       "main": [
-        "jquery-ui.js",
-        "themes/smoothness/jquery-ui.css"
+        "jquery-ui.js"
       ]
     },
     "angular2": {
