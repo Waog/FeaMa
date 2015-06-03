@@ -8,6 +8,8 @@ import {Component, View, bootstrap, For, If} from 'angular2/angular2';
     templateUrl: 'boardCardTemplate.html'
 })
 export class BoardCardComponent {
+    rndVal:number;       
     constructor() {
+        this.rndVal = Math.random();
     }
 }

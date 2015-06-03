@@ -15,8 +15,9 @@ class StomapComponent {
 
     constructor() {
         this.message = "I'm the parent";
-        console.log($('.boardcard'));
-        $('.boardcard').draggable();
+        $(".stomap-board-col").sortable({
+            placeholder: "portlet-placeholder ui-corner-all panel panel-default"
+        });        
     }
 }
 bootstrap(StomapComponent);
