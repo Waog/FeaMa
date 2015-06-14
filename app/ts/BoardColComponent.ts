@@ -17,7 +17,8 @@ export class BoardColComponent {
             console.log('e1:', el);
             console.log('$(el):', $(el));
             $(el).sortable({
-                placeholder: "portlet-placeholder ui-corner-all panel panel-default"
+                placeholder: "portlet-placeholder ui-corner-all panel panel-default",
+                connectWith: ".stomap-board-col"
             });
         }, 0);
     }
