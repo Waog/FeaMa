@@ -10,11 +10,29 @@ import {BoardComponent} from './BoardComponent';
     templateUrl: 'stomapTemplate.html',
     directives: [BoardComponent]
 })
-class StomapComponent {
-    message: string;
+class StomapComponent implements GithubApi.UserLoginHandler, GithubApi.IssuesFetchedHandler {
+        
+        board: BoardComponent;
+    
+        constructor() {
+            console.log('constructor');
 
-    constructor() {
-        this.message = "I'm the parent";
-    }
+            var githubLogin = new GithubLogin(this);
+        }
+
+        handleUserLogin = (githubLogin: GithubLogin) => {
+            var issues: GithubIssues = new GithubIssues(githubLogin);
+            issues.fetchAll(this);
+        }
+
+        handleFetchedIssues = (allIssues: GithubIssues) => {
+            console.log('handleFetchedIssues ', allIssues);
+
+            this.board = new BoardComponent(allIssues);
+        }
+
+        handleFetchedIssuesError = (e) => {
+            console.log('Error Fetching Issues: ', e);
+        }
 }
 bootstrap(StomapComponent);

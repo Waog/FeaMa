@@ -65,6 +65,7 @@ module Stomap {
             featureIssue.setBody(newBody);
         }
 
+        // TODO: remove, moved to GithubIssue
         private getSubIssues = (featureIssue: GithubIssue, allIssues: GithubIssues) => {
             var result: GithubIssue[] = [];
             for (var i = 0; i < allIssues.size(); i++) {
@@ -119,6 +120,7 @@ module Stomap {
 
         }
 
+        // TODO: delete, modified and moved to BoardComponent
         public fillBoardWithIssues = (issues: GithubApi.GithubIssues) => {
             var columnCount = 0;
             for (var i = 0; i < issues.size(); ++i) {

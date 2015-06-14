@@ -11,11 +11,24 @@ import {BoardCardComponent} from './BoardCardComponent';
     directives: [BoardCardComponent]
 })
 export class BoardColComponent {
-    constructor(elementRef: ElementRef) {
+
+    featureCard: BoardCardComponent;
+    subCards: BoardCardComponent[] = [];
+
+    constructor(featureIssue: GithubIssue, allIssues: GithubIssues, elementRef: ElementRef) {
+        this.makeSortable(elementRef);
+
+        this.featureCard = new BoardCardComponent(featureIssue);
+
+        var subIssues = featureIssue.getSubIssues(allIssues);
+        for (var i = 0; i < subIssues.size(); i++) {
+            this.subCards.push(new BoardCardComponent(subIssues.get(i)));
+        }
+    }
+
+    makeSortable = (elementRef: ElementRef) => {
         setTimeout(function() {
             var el: any = elementRef.domElement.children[0];
-            console.log('e1:', el);
-            console.log('$(el):', $(el));
             $(el).sortable({
                 placeholder: "portlet-placeholder ui-corner-all panel panel-default",
                 connectWith: ".stomap-board-col"

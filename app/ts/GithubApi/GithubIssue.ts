@@ -10,13 +10,11 @@ module GithubApi {
 
     export class GithubIssue {
 
-        private helloGithub: HelloJSStaticNamed;
         private githubResponse;
         private parent;
 
         constructor(githubResponse: any, private githubLogin: GithubLogin) {
             this.githubResponse = jQuery.extend(true, {}, githubResponse); // deep copy
-            this.helloGithub = githubLogin.getHello();
         }
 
         public setBody = (body: string) => {
@@ -36,7 +34,7 @@ module GithubApi {
         }
 
         public commit = (resultHandler: IssueCommitHandler) => {
-            this.helloGithub.api('/repos/Waog/sandboxRepo/issues/' + this.githubResponse.number,
+            this.githubLogin.getHello().api('/repos/Waog/sandboxRepo/issues/' + this.githubResponse.number,
                 'PATCH', {
                     title: this.githubResponse.title,
                     body: this.githubResponse.body,
@@ -71,9 +69,24 @@ module GithubApi {
         public getParent: () => GithubIssue = () => {
             return this.parent;
         }
-        
+
         public getHtmlUrl: () => string = () => {
-           return this.githubResponse.html_url; 
+            return this.githubResponse.html_url;
+        }
+
+        public getSubIssues = (allIssues: GithubIssues) => {
+            var result: GithubIssues = new GithubIssues(this.githubLogin);
+            for (var i = 0; i < allIssues.size(); i++) {
+                var other = allIssues.get(i);
+
+                var regexToFindIssueReference = '#' + other.getNumber() + '([^a-zA-Z0-9]|$)';
+
+                if (this.getBody().match(regexToFindIssueReference)) {
+                    other.setParent(this);
+                    result.add(other);
+                }
+            }
+            return result;
         }
     }
 }
