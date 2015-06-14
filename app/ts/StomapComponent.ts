@@ -15,9 +15,6 @@ class StomapComponent {
 
     constructor() {
         this.message = "I'm the parent";
-        $(".stomap-board-col").sortable({
-            placeholder: "portlet-placeholder ui-corner-all panel panel-default"
-        });
     }
 }
 bootstrap(StomapComponent);
