@@ -1,0 +1,12 @@
+<hr />
+BOARD: [allIssues:{{'' + allIssues}};</br>
+- <boardcol [allissues]="allIssues"></boardcol></br>
+<ul *ng-if="allIssues">
+  <li>Features available:</li>
+  <li *ng-for="#feature of getFeatures()">
+    Feature: {{'' + feature}}
+    <boardcol [allissues]="allIssues" [featureissue]="feature" [subissues]="getSubissues(feature)"></boardcol></br>
+  </li>
+</ul>
+]
+<hr />

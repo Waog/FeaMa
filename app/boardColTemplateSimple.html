@@ -1,0 +1,12 @@
+BoardCol[
+  featureIssue: {{''+featureIssue}};
+  subIssues: {{''+subIssues}};
+  allIssues: {{''+allIssues}};
+  <ul *ng-if="subIssues">
+    <li>Subissues:</li>
+    <li *ng-for="#subissue of subIssues.issues">
+      {{''+subissue}}
+      <card [issue]="subissue"></card>
+    </li>
+  </ul>
+]
