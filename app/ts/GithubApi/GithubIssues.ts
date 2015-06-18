@@ -2,62 +2,79 @@
 /// <reference path="GithubLogin" />
 /// <reference path="GithubIssue" />
 
-module GithubApi {
+import {GithubIssue} from './GithubIssue';
+import {GithubLogin} from './GithubLogin';
 
-    export interface IssuesFetchedHandler {
-        handleFetchedIssues(result: GithubIssues): void;
-        handleFetchedIssuesError(err: any): void;
+export interface IssuesFetchedHandler {
+    handleFetchedIssues(result: GithubIssues): void;
+    handleFetchedIssuesError(err: any): void;
+}
+
+export class GithubIssues {
+
+    private issues: GithubIssue[] = [];
+
+    constructor(private githubLogin: GithubLogin) {
+        console.log('GithubIssues constructor()', githubLogin);
     }
 
-    export class GithubIssues {
+    fetchByLabel(label: string, handler: IssuesFetchedHandler) {
+        this.fetch({ labels: label }, handler);
+    }
 
-        private issues: GithubIssue[] = [];
+    fetchAll(handler: IssuesFetchedHandler) {
+        this.fetch({}, handler);
+    }
 
-        constructor(private githubLogin: GithubLogin) {
+    private fetch(options: any, handler: IssuesFetchedHandler) {
+        this.githubLogin.getHello().api('/repos/Waog/sandboxRepo/issues', 'get', options)
+            .then((successResponse: any) => {
+                this.initFromResponse(successResponse);
+                handler.handleFetchedIssues(this);
+            }, handler.handleFetchedIssuesError);
+    }
+
+    private initFromResponse = (successResponse: any) => {
+        for (var i = 0; i < successResponse.data.length; ++i) {
+            this.issues.push(new GithubIssue(successResponse.data[i], this.githubLogin));
         }
+    }
 
-        fetchByLabel(label: string, handler: IssuesFetchedHandler) {
-            this.fetch({ labels: label }, handler);
-        }
+    get(index: number): GithubIssue {
+        return this.issues[index];
+    }
 
-        fetchAll(handler: IssuesFetchedHandler) {
-            this.fetch({}, handler);
-        }
-
-        private fetch(options: any, handler: IssuesFetchedHandler) {
-            this.githubLogin.getHello().api('/repos/Waog/sandboxRepo/issues', 'get', options)
-                .then((successResponse: any) => {
-                    this.initFromResponse(successResponse);
-                    handler.handleFetchedIssues(this);
-                }, handler.handleFetchedIssuesError);
-        }
-
-        private initFromResponse = (successResponse: any) => {
-            for (var i = 0; i < successResponse.data.length; ++i) {
-                this.issues.push(new GithubIssue(successResponse.data[i], this.githubLogin));
+    getByLabel: (label: string) => GithubIssues = (label: string) => {
+        var result = new GithubIssues(this.githubLogin);
+        for (var i = 0; i < this.size(); i++) {
+            if (this.get(i).hasLabel(label)) {
+                result.issues.push(this.get(i))
             }
         }
+        return result;
+    }
 
-        get(index: number): GithubIssue {
-            return this.issues[index];
-        }
+    getFeatures = () => {
+        return this.getByLabel('feature');
+    }
 
-        getByLabel: (label: string) => GithubIssues = (label: string) => {
-            var result = new GithubIssues(this.githubLogin);
-            for (var i = 0; i < this.size(); i++) {
-                if (this.get(i).hasLabel(label)) {
-                    result.issues.push(this.get(i))
-                }
-            }
-            return result;
-        }
+    size(): number {
+        return this.issues.length;
+    }
 
-        size(): number {
-            return this.issues.length;
-        }
-        
-        add = (issue:GithubIssue) => {
-            this.issues.push(issue);
-        }
+    add = (issue: GithubIssue) => {
+        this.issues.push(issue);
+    }
+    
+    toString = () => {
+       var result = 'issues[';
+       for (var i = 0; i < this.size(); i++) {
+           result += this.get(i);
+           if (i != this.size() - 1) {
+               result += ',';
+           }
+       }
+       result += ']';
+       return result;
     }
 }

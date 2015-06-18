@@ -1,16 +1,17 @@
 /// <reference path="tsd.d.ts" />
 import {Component, View, bootstrap} from 'angular2/angular2';
 
+import {GithubIssue} from './GithubApi/GithubIssue';
+
 @Component({
-    selector: 'boardcard'
+    selector: 'card',
+    properties: ['issue: issue']
 })
 @View({
     templateUrl: 'boardCardTemplate.html'
 })
 export class BoardCardComponent {
-    title: string;
-    constructor(private issue:GithubIssue) {
-        this.title = issue.getTitle();
-
+    issue:GithubIssue;
+    constructor() {
     }
 }

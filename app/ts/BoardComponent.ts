@@ -1,32 +1,25 @@
 /// <reference path="tsd.d.ts" />
-import {Component, View, bootstrap} from 'angular2/angular2';
+import {Component, View, coreDirectives} from 'angular2/angular2';
 import {BoardColComponent} from './BoardColComponent';
+import {GithubIssue} from './GithubApi/GithubIssue';
 
 @Component({
-    selector: 'board'
+    selector: 'board',
+    properties: ['allIssues: allissues']
 })
 @View({
     templateUrl: 'boardTemplate.html',
-    directives: [BoardColComponent]
+    directives: [BoardColComponent, coreDirectives]
 })
 export class BoardComponent {
 
-    columns: BoardColComponent[] = [];
-
-    constructor(allIssues: GithubIssues) {
-        this.fillBoardWithIssues(allIssues);
+    allIssues: any;
+    
+    getFeatures = () => {
+       return this.allIssues.getFeatures().issues; 
     }
-
-    public fillBoardWithIssues = (allIssues: GithubApi.GithubIssues) => {
-        var columnCount = 0;
-
-        var featureIssues = allIssues.getByLabel('feature');
-
-        for (var i = 0; i < featureIssues.size(); ++i) {
-            var featureIssue = featureIssues.get(i);
-
-            this.columns.push(new BoardColComponent(featureIssue, allIssues));
-        }
+    
+    getSubissues = (feature:GithubIssue) => {
+       return feature.getSubIssues(this.allIssues);
     }
-
 }

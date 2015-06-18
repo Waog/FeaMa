@@ -1,35 +1,33 @@
 /// <reference path="tsd.d.ts" />
-import {Component, View, bootstrap, ElementRef} from 'angular2/angular2';
+import {Component, View, coreDirectives, ElementRef} from 'angular2/angular2';
 import {BoardCardComponent} from './BoardCardComponent';
 
+import {GithubIssue} from './GithubApi/GithubIssue';
+import {GithubIssues} from './GithubApi/GithubIssues';
+
 @Component({
-    selector: 'boardrow',
-    injectables: [ElementRef]
+    selector: 'boardcol',
+    injectables: [ElementRef],
+    properties: ['allIssues: allissues', 'featureIssue: featureissue', 'subIssues: subissues']
 })
 @View({
     templateUrl: 'boardColTemplate.html',
-    directives: [BoardCardComponent]
+    directives: [BoardCardComponent, coreDirectives]
 })
 export class BoardColComponent {
 
-    featureCard: BoardCardComponent;
-    subCards: BoardCardComponent[] = [];
+    featureIssue: GithubIssue;
+    subIssues: GithubIssues;
+    allIssues: GithubIssues;
 
-    constructor(featureIssue: GithubIssue, allIssues: GithubIssues, elementRef: ElementRef) {
+    constructor(elementRef: ElementRef) {
         this.makeSortable(elementRef);
-
-        this.featureCard = new BoardCardComponent(featureIssue);
-
-        var subIssues = featureIssue.getSubIssues(allIssues);
-        for (var i = 0; i < subIssues.size(); i++) {
-            this.subCards.push(new BoardCardComponent(subIssues.get(i)));
-        }
     }
 
     makeSortable = (elementRef: ElementRef) => {
         setTimeout(function() {
             var el: any = elementRef.domElement.children[0];
-            $(el).sortable({
+            $(el).find('.stomap-board-col').sortable({
                 placeholder: "portlet-placeholder ui-corner-all panel panel-default",
                 connectWith: ".stomap-board-col"
             });

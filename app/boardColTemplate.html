@@ -1,5 +1,5 @@
-<div class="stomap-board-col col-xs-4 thumbnail">
-  <boardcard></boardcard>
-  <boardcard></boardcard>
-  <boardcard></boardcard>
+<div class="col-xs-4 thumbnail">
+  <div *ng-if="subIssues" class="stomap-board-col">
+    <card *ng-for="#subissue of subIssues.issues" [issue]="subissue"></card>
+  </div>
 </div>

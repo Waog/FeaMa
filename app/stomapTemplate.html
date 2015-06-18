@@ -15,6 +15,10 @@
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
+          <div>
+            <ul class="nav navbar-nav navbar-right login-button-hook">
+            </ul>
+          </div>
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->
     </nav><!-- /.navbar -->
@@ -23,12 +27,12 @@
 
       <div class="row row-offcanvas row-offcanvas-right">
 
-        <board></board>
+        <board [allissues]="allIssues"></board>
 
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
           <div class="list-group">
             <a href="#" class="list-group-item active">Link</a>
-            <a href="#" class="list-group-item">Link</a>
+            <a href="#" (click)="" class="list-group-item">Force update</a>
             <a href="#" class="list-group-item">Link</a>
           </div>
         </div><!--/.sidebar-offcanvas-->

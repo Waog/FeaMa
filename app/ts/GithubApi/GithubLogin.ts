@@ -1,75 +1,73 @@
 /// <reference path="../tsd.d.ts" />
 
-module GithubApi {
+export interface UserLoginHandler {
+    handleUserLogin(githubLogin: GithubLogin): void;
+}
 
-    export interface UserLoginHandler {
-        handleUserLogin(githubLogin: GithubLogin): void;
+export class GithubLogin {
+    constructor(private loginHandler: UserLoginHandler) {
+        console.log('GithubLogin constructor');
+        hello.init({
+            github: '1418f544c5ed81d99e77'
+        }, {
+                redirect_uri: 'http://localhost:9000/',
+                oauth_proxy: 'https://auth-server.herokuapp.com/proxy',
+                scope: 'repo'
+            });
+        hello.on('auth.login', this.handleAuthLogin);
+        hello.on('auth.logout', this.handleAuthLogout);
+
+        this.displayLoginButton();
+        console.log('GithubLogin constructor end');
     }
 
-    export class GithubLogin {
-        constructor(private loginHandler: UserLoginHandler) {
-            hello.init({
-                github: '1418f544c5ed81d99e77'
-            }, {
-                    redirect_uri: 'http://localhost:9000/',
-                    oauth_proxy: 'https://auth-server.herokuapp.com/proxy',
-                    scope: 'repo'
-                });
-            hello.on('auth.login', this.handleAuthLogin);
-            hello.on('auth.logout', this.handleAuthLogout);
+    private displayLoginButton = () => {
+        $('.login-button-hook').append(
+            '<li onclick="hello(\'github\').login()"><a>Login With Github</a></li>'
+            );
+    }
 
-            this.displayLoginButton();
-        }
+    private handleMeResponse = (r) => {
 
-        private displayLoginButton = () => {
-            $('#logout').append(
-                '<button onclick="hello(\'github\').login()">login</button>');
-        }
+        console.log('handleMeResponse ', r);
 
-        private handleMeResponse = (r) => {
+        $('#profile').empty();
+        $('#profile').append(r.name);
+        $('#profile').append(
+            '<img style="height: 50px; width: auto;" src="' + r.thumbnail + '" />');
 
-            console.log('handleMeResponse ', r);
+        this.loginHandler.handleUserLogin(this);
+    }
 
-            $('#profile').empty();
-            $('#profile').append(r.name);
-            $('#profile').append(
-                '<img style="height: 50px; width: auto;" src="' + r.thumbnail + '" />');
+    private handleAuthLogout = (auth) => {
 
-            this.loginHandler.handleUserLogin(this);
-        }
+        console.log('handleAuthLogout ', auth);
 
-        private handleAuthLogout = (auth) => {
+        // Call user information, for the given network
+        $('#profile').empty();
+        $('.login-button-hook').empty();
+        $('.login-button-hook').append(
+            '<li onclick="hello(\'github\').login()"><a>Login With Github</a></li>');
+    }
 
-            console.log('handleAuthLogout ', auth);
+    private handleAuthLogin = (auth: HelloJSEventArgument) => {
 
-            // Call user information, for the given network
-            $('#profile').empty();
-            $('#login').empty();
-            $('#logout').empty();
-            $('#logout').append(
-                '<button onclick="hello(\'github\').login()">login</button>');
-        }
+        console.log('handleAuthLogin ', auth);
 
-        private handleAuthLogin = (auth: HelloJSEventArgument) => {
+        $('#profile').empty();
+        $('.login-button-hook').empty();
+        $('.login-button-hook').append(
+            '<li onclick="hello(\'github\').logout()"><a>Logut</a></li>');
 
-            console.log('handleAuthLogin ', auth);
+        hello('github').api('/me').then(this.handleMeResponse,
+            this.handleError);
+    }
 
-            $('#profile').empty();
-            $('#login').empty();
-            $('#logout').empty();
-            $('#logout').append(
-                '<button onclick="hello(\'github\').logout()">logout</button>');
+    private handleError = (e) => {
+        console.log('handleError ', e);
+    }
 
-            hello('github').api('/me').then(this.handleMeResponse,
-                this.handleError);
-        }
-
-        private handleError = (e) => {
-            console.log('handleError ', e);
-        }
-
-        public getHello(): HelloJSStaticNamed {
-            return hello('github');
-        }
+    public getHello(): HelloJSStaticNamed {
+        return hello('github');
     }
 }
