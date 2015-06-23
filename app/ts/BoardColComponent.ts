@@ -4,6 +4,7 @@ import {BoardCardComponent} from './BoardCardComponent';
 
 import {GithubIssue} from './GithubApi/GithubIssue';
 import {GithubIssues} from './GithubApi/GithubIssues';
+import {DomToCompMap} from './DomToCompMap';
 
 @Component({
     selector: 'boardcol',
@@ -25,12 +26,25 @@ export class BoardColComponent {
     }
 
     makeSortable = (elementRef: ElementRef) => {
-        setTimeout(function() {
+        setTimeout(() => {
             var el: any = elementRef.domElement.children[0];
+            // TODO: introduce instance variable
             $(el).find('.stomap-board-col').sortable({
                 placeholder: "portlet-placeholder ui-corner-all panel panel-default",
                 connectWith: ".stomap-board-col"
             });
+
+            $(el).find('.stomap-board-col').droppable({
+                drop: this.dropHandler
+            });
         }, 0);
+    }
+
+    private dropHandler = (event, draggable) => {
+        console.log('target column component: ', this);
+        console.log('dropped card model: ', $(draggable.draggable[0]).find('.stomap-board-card').data('model'));
+        
+        var draggedIssue:GithubIssue = $(draggable.draggable[0]).find('.stomap-board-card').data('model');
+        draggedIssue.setParent(this.featureIssue);
     }
 }

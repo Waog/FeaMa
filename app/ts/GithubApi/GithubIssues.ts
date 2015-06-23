@@ -15,7 +15,7 @@ export class GithubIssues {
     private issues: GithubIssue[] = [];
 
     constructor(private githubLogin: GithubLogin) {
-        console.log('GithubIssues constructor()', githubLogin);
+//        console.log('GithubIssues constructor()', githubLogin);
     }
 
     fetchByLabel(label: string, handler: IssuesFetchedHandler) {

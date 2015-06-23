@@ -2,6 +2,7 @@
 import {Component, View, coreDirectives} from 'angular2/angular2';
 import {BoardColComponent} from './BoardColComponent';
 import {GithubIssue} from './GithubApi/GithubIssue';
+import {GithubIssues} from './GithubApi/GithubIssues';
 
 @Component({
     selector: 'board',
