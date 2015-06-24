@@ -4,7 +4,6 @@ import {BoardCardComponent} from './BoardCardComponent';
 
 import {GithubIssue} from './GithubApi/GithubIssue';
 import {GithubIssues} from './GithubApi/GithubIssues';
-import {DomToCompMap} from './DomToCompMap';
 
 @Component({
     selector: 'boardcol',
