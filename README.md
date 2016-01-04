@@ -6,7 +6,7 @@ The website was initialized using [yo](http://yeoman.io/) with the [webapp gener
 ### Installation
 1. Checkout the repository
 1. Navigate to the working directory (comand line)
-  1. run `npm install -g grunt cli`
+  1. run `npm install -g grunt-cli`
   1. run `npm install -g tsd`
   1. run `npm install -g bower`
   1. run `npm install`
